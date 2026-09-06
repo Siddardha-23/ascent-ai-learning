@@ -1,0 +1,8 @@
+# Files not needed by the Vercel build (kept in the repo for reference/docs).
+.ascent-data
+CURRICULUM.md
+SOURCES.md
+TOPIC-MAP.md
+START-HERE.md
+KIRO-PROMPT.md
+validate-package.py
