@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Ascent — a 30-day AI learning studio",
   description:
-    "A personal, self-paced AI learning course for Harshith and Aparna: from backend foundations to agent engineering.",
+    "A personal, self-paced 30-day AI learning course: from backend foundations to agent engineering.",
 };
 
 export const viewport: Viewport = {
