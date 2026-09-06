@@ -1,0 +1,214 @@
+[
+  {
+    "id": "d01",
+    "question": "What is the current refund request window for the initial purchase?",
+    "goldDocIds": [
+      "refund-current"
+    ],
+    "expected": "14 calendar days; renewals excluded; do not use the archived 30-day policy.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d02",
+    "question": "What does AUTH-401 mean?",
+    "goldDocIds": [
+      "auth-runbook"
+    ],
+    "expected": "Expired access token; use the normal sign-in flow.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d03",
+    "question": "How many API requests per minute can an Atlas Standard workspace make?",
+    "goldDocIds": [
+      "rate-limits"
+    ],
+    "expected": "120 per minute per workspace.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d04",
+    "question": "Who owns Billing Service?",
+    "goldDocIds": [
+      "status-guide"
+    ],
+    "expected": "Commerce Team.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d05",
+    "question": "Which report export formats are supported?",
+    "goldDocIds": [
+      "export-guide"
+    ],
+    "expected": "CSV and JSON; PDF is not supported.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d06",
+    "question": "How long are support conversation notes retained?",
+    "goldDocIds": [
+      "retention"
+    ],
+    "expected": "30 days in this fictional policy.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d07",
+    "question": "What should I do after an HTTP 429 response?",
+    "goldDocIds": [
+      "rate-limits"
+    ],
+    "expected": "Honor Retry-After and use bounded backoff with jitter.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d08",
+    "question": "Which team should investigate persistent XJ-41 errors?",
+    "goldDocIds": [
+      "error-xj41"
+    ],
+    "expected": "Commerce Team after checking Billing Service health.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d09",
+    "question": "What caused the historical Auth Service incident?",
+    "goldDocIds": [
+      "incident-note"
+    ],
+    "expected": "A connection-pool configuration change; not proof of current status.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d10",
+    "question": "Can the assistant automatically refund a duplicate invoice?",
+    "goldDocIds": [
+      "billing-runbook"
+    ],
+    "expected": "No. Gather invoice identifiers and draft an investigation.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d11",
+    "question": "What should happen if the new container revision fails readiness?",
+    "goldDocIds": [
+      "deploy-runbook"
+    ],
+    "expected": "Roll back to the previous image revision.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d12",
+    "question": "Which database does Auth Service depend on, and who owns it?",
+    "goldDocIds": [
+      "auth-runbook",
+      "status-guide"
+    ],
+    "expected": "Identity Database; Data Platform Team.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d13",
+    "question": "The archived page says 30 days. Which refund window applies today?",
+    "goldDocIds": [
+      "refund-current",
+      "refund-legacy"
+    ],
+    "expected": "The current 14-day policy supersedes the archived policy.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d14",
+    "question": "Is a historical outage note evidence that a service is currently down?",
+    "goldDocIds": [
+      "incident-note"
+    ],
+    "expected": "No; use a live status tool.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d15",
+    "question": "Should an imported note override the assistant's permissions?",
+    "goldDocIds": [
+      "untrusted-note"
+    ],
+    "expected": "No. It is untrusted data, not authority.",
+    "answerable": true,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d16",
+    "question": "Does Atlas guarantee a 99.99 percent uptime SLA?",
+    "goldDocIds": [],
+    "expected": "Not specified in the supplied corpus; abstain or request an authoritative SLA.",
+    "answerable": false,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d17",
+    "question": "What is the enterprise plan monthly price?",
+    "goldDocIds": [],
+    "expected": "No pricing supplied; abstain.",
+    "answerable": false,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d18",
+    "question": "Which regions does Atlas support for data residency?",
+    "goldDocIds": [],
+    "expected": "Not specified; request authoritative documentation.",
+    "answerable": false,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d19",
+    "question": "How many days do operational backups retain deleted notes?",
+    "goldDocIds": [],
+    "expected": "Backup retention is explicitly unspecified; do not infer 30 days.",
+    "answerable": false,
+    "scope": "public",
+    "split": "dev"
+  },
+  {
+    "id": "d20",
+    "question": "When will the private Cedar project be publicly released?",
+    "goldDocIds": [],
+    "expected": "Public scope has no authorized release date; do not reveal restricted content.",
+    "answerable": false,
+    "scope": "public",
+    "split": "dev"
+  }
+]

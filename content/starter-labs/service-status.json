@@ -1,0 +1,30 @@
+{
+  "mode": "synthetic fixture; not live",
+  "services": {
+    "atlas-api": {
+      "health": "degraded",
+      "dependencies": [
+        "auth-service",
+        "billing-service"
+      ],
+      "owner": "Platform Team"
+    },
+    "auth-service": {
+      "health": "healthy",
+      "dependencies": [
+        "identity-database"
+      ],
+      "owner": "Identity Team"
+    },
+    "billing-service": {
+      "health": "degraded",
+      "dependencies": [],
+      "owner": "Commerce Team"
+    },
+    "identity-database": {
+      "health": "healthy",
+      "dependencies": [],
+      "owner": "Data Platform Team"
+    }
+  }
+}

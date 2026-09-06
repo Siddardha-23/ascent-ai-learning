@@ -1,0 +1,1232 @@
+[
+  {
+    "id": "ai",
+    "term": "AI",
+    "definition": "A broad field concerned with systems performing tasks associated with intelligent behavior.",
+    "example": "Planning a route or interpreting a support request.",
+    "firstDay": 1,
+    "sourceIds": [
+      "google-ml"
+    ]
+  },
+  {
+    "id": "machine-learning",
+    "term": "Machine learning",
+    "definition": "Learning a useful mapping or structure from examples instead of specifying every rule.",
+    "example": "Predicting ticket categories from labeled examples.",
+    "firstDay": 3,
+    "sourceIds": [
+      "google-ml"
+    ]
+  },
+  {
+    "id": "deep-learning",
+    "term": "Deep learning",
+    "definition": "Machine learning using neural networks with multiple layers of learned transformations.",
+    "example": "An image classifier with several layers.",
+    "firstDay": 4,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "generative-ai",
+    "term": "Generative AI",
+    "definition": "Models that generate content such as text, images or audio.",
+    "example": "Drafting a support response.",
+    "firstDay": 1,
+    "sourceIds": [
+      "hf-llm"
+    ]
+  },
+  {
+    "id": "inference",
+    "term": "Inference",
+    "definition": "Using an already-trained model to produce an output.",
+    "example": "Calling a saved classifier on a new ticket.",
+    "firstDay": 1,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "training",
+    "term": "Training",
+    "definition": "Updating model parameters using data and an optimization objective.",
+    "example": "Reducing a classifier's loss over batches.",
+    "firstDay": 3,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "vector",
+    "term": "Vector",
+    "definition": "An ordered collection of numbers.",
+    "example": "A three-feature description of a support ticket.",
+    "firstDay": 2,
+    "sourceIds": [
+      "numpy-basics"
+    ]
+  },
+  {
+    "id": "matrix",
+    "term": "Matrix",
+    "definition": "A two-dimensional array of values used for transformations and data.",
+    "example": "A batch of examples with one row per example.",
+    "firstDay": 2,
+    "sourceIds": [
+      "numpy-basics"
+    ]
+  },
+  {
+    "id": "tensor",
+    "term": "Tensor",
+    "definition": "A numerical array that may have any number of dimensions.",
+    "example": "Batch × sequence × hidden-dimension activations.",
+    "firstDay": 2,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "dot-product",
+    "term": "Dot product",
+    "definition": "A sum of elementwise products that can measure alignment or form a weighted sum.",
+    "example": "Combining distance and queue features with weights.",
+    "firstDay": 2,
+    "sourceIds": [
+      "3b1b-dot"
+    ]
+  },
+  {
+    "id": "probability-distribution",
+    "term": "Probability distribution",
+    "definition": "A description of possible outcomes and their probabilities.",
+    "example": "A next-token distribution over a vocabulary.",
+    "firstDay": 2,
+    "sourceIds": [
+      "google-classification"
+    ]
+  },
+  {
+    "id": "gradient",
+    "term": "Gradient",
+    "definition": "The derivatives of a function with respect to its input variables or parameters.",
+    "example": "Sensitivity of loss to each weight.",
+    "firstDay": 2,
+    "sourceIds": [
+      "3b1b-gradient"
+    ]
+  },
+  {
+    "id": "loss",
+    "term": "Loss",
+    "definition": "A numerical objective measuring prediction error for training.",
+    "example": "Mean squared error for predicted delivery time.",
+    "firstDay": 2,
+    "sourceIds": [
+      "google-linear"
+    ]
+  },
+  {
+    "id": "weight",
+    "term": "Weight",
+    "definition": "A model parameter used in a learned transformation.",
+    "example": "A coefficient multiplying a feature in a neuron.",
+    "firstDay": 4,
+    "sourceIds": [
+      "3b1b-neural"
+    ]
+  },
+  {
+    "id": "bias-parameter",
+    "term": "Bias parameter",
+    "definition": "An additive model parameter; distinct from social or statistical bias.",
+    "example": "The intercept in a linear prediction.",
+    "firstDay": 4,
+    "sourceIds": [
+      "3b1b-neural"
+    ]
+  },
+  {
+    "id": "activation",
+    "term": "Activation",
+    "definition": "A computed value inside a network, often after a nonlinear function.",
+    "example": "A hidden neuron's value for one input.",
+    "firstDay": 4,
+    "sourceIds": [
+      "3b1b-neural"
+    ]
+  },
+  {
+    "id": "backpropagation",
+    "term": "Backpropagation",
+    "definition": "Efficient computation of parameter gradients through composed operations.",
+    "example": "Using autograd to differentiate a neural-network loss.",
+    "firstDay": 4,
+    "sourceIds": [
+      "3b1b-backprop"
+    ]
+  },
+  {
+    "id": "optimizer",
+    "term": "Optimizer",
+    "definition": "An algorithm that updates parameters using gradients or related information.",
+    "example": "An SGD step after backward().",
+    "firstDay": 4,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "epoch",
+    "term": "Epoch",
+    "definition": "One pass through a training dataset.",
+    "example": "Training for five epochs revisits the data five times.",
+    "firstDay": 4,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "batch",
+    "term": "Batch",
+    "definition": "A group of examples processed together.",
+    "example": "Computing gradients from 32 tickets at once.",
+    "firstDay": 4,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "learning-rate",
+    "term": "Learning rate",
+    "definition": "A setting controlling the scale of optimization updates.",
+    "example": "A large step may overshoot a loss minimum.",
+    "firstDay": 4,
+    "sourceIds": [
+      "3b1b-gradient"
+    ]
+  },
+  {
+    "id": "overfitting",
+    "term": "Overfitting",
+    "definition": "Learning training-specific patterns that do not generalize well.",
+    "example": "A classifier memorizes ticket IDs.",
+    "firstDay": 3,
+    "sourceIds": [
+      "google-ml"
+    ]
+  },
+  {
+    "id": "data-leakage",
+    "term": "Data leakage",
+    "definition": "Evaluation information improperly influences training or selection.",
+    "example": "Fitting preprocessing on the test set.",
+    "firstDay": 3,
+    "sourceIds": [
+      "sklearn-evaluation"
+    ]
+  },
+  {
+    "id": "precision",
+    "term": "Precision",
+    "definition": "Among predicted positives, the fraction that are true positives.",
+    "example": "How many flagged escalations really need escalation.",
+    "firstDay": 3,
+    "sourceIds": [
+      "sklearn-evaluation"
+    ]
+  },
+  {
+    "id": "recall",
+    "term": "Recall",
+    "definition": "Among actual positives, the fraction detected.",
+    "example": "How many urgent tickets were caught.",
+    "firstDay": 3,
+    "sourceIds": [
+      "sklearn-evaluation"
+    ]
+  },
+  {
+    "id": "f1",
+    "term": "F1",
+    "definition": "The harmonic mean of precision and recall under a chosen averaging convention.",
+    "example": "A classification metric balancing two types of failure.",
+    "firstDay": 3,
+    "sourceIds": [
+      "sklearn-evaluation"
+    ]
+  },
+  {
+    "id": "calibration",
+    "term": "Calibration",
+    "definition": "Agreement between stated probabilities and observed outcome frequencies.",
+    "example": "Cases predicted at 70% should succeed about that often in comparable groups.",
+    "firstDay": 3,
+    "sourceIds": [
+      "google-classification"
+    ]
+  },
+  {
+    "id": "cnn",
+    "term": "CNN",
+    "definition": "A neural architecture using convolutional operations to exploit local patterns.",
+    "example": "Detecting edges and shapes in images.",
+    "firstDay": 5,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "rnn",
+    "term": "RNN",
+    "definition": "A neural architecture that updates recurrent state across sequence positions.",
+    "example": "Processing time-ordered inputs step by step.",
+    "firstDay": 5,
+    "sourceIds": [
+      "3b1b-neural"
+    ]
+  },
+  {
+    "id": "diffusion-model",
+    "term": "Diffusion model",
+    "definition": "A generative approach that learns a reverse denoising process.",
+    "example": "Generating an image through iterative denoising.",
+    "firstDay": 5,
+    "sourceIds": [
+      "hf-diffusion"
+    ]
+  },
+  {
+    "id": "reinforcement-learning",
+    "term": "Reinforcement learning",
+    "definition": "Learning action selection through interaction and a reward objective.",
+    "example": "A policy choosing moves in a simulated environment.",
+    "firstDay": 5,
+    "sourceIds": [
+      "hf-deep-rl"
+    ]
+  },
+  {
+    "id": "policy",
+    "term": "Policy",
+    "definition": "In RL, a rule or model for choosing actions; in software governance, an authorization/business rule.",
+    "example": "A game policy selects moves; a refund policy sets allowed actions.",
+    "firstDay": 5,
+    "sourceIds": [
+      "hf-deep-rl"
+    ]
+  },
+  {
+    "id": "token",
+    "term": "Token",
+    "definition": "A tokenizer-defined unit of input/output representation.",
+    "example": "A word fragment, punctuation mark or byte sequence.",
+    "firstDay": 6,
+    "sourceIds": [
+      "hf-tokenizers"
+    ]
+  },
+  {
+    "id": "tokenizer",
+    "term": "Tokenizer",
+    "definition": "A component converting input into token IDs and often decoding them back.",
+    "example": "Encoding a Python snippet using a model-compatible vocabulary.",
+    "firstDay": 6,
+    "sourceIds": [
+      "hf-tokenizers"
+    ]
+  },
+  {
+    "id": "bpe",
+    "term": "BPE",
+    "definition": "Byte-pair encoding: a subword approach based on repeated symbol merges.",
+    "example": "Frequent character sequences become reusable tokens.",
+    "firstDay": 6,
+    "sourceIds": [
+      "hf-tokenizers"
+    ]
+  },
+  {
+    "id": "vocabulary",
+    "term": "Vocabulary",
+    "definition": "The set of token IDs and their associated units for a tokenizer/model.",
+    "example": "A model's tokenizer maps recognized units to integers.",
+    "firstDay": 6,
+    "sourceIds": [
+      "hf-tokenizers"
+    ]
+  },
+  {
+    "id": "logit",
+    "term": "Logit",
+    "definition": "An unnormalized model score before conversion to probabilities.",
+    "example": "One score for each possible next token.",
+    "firstDay": 6,
+    "sourceIds": [
+      "3b1b-transformers"
+    ]
+  },
+  {
+    "id": "softmax",
+    "term": "Softmax",
+    "definition": "A transformation mapping scores to nonnegative values summing to one.",
+    "example": "Turning next-token logits into a distribution.",
+    "firstDay": 6,
+    "sourceIds": [
+      "3b1b-transformers"
+    ]
+  },
+  {
+    "id": "temperature",
+    "term": "Temperature",
+    "definition": "A supported decoding control that adjusts the distribution used in sampling.",
+    "example": "Lower settings can reduce variation without proving factuality.",
+    "firstDay": 6,
+    "sourceIds": [
+      "3b1b-transformers"
+    ]
+  },
+  {
+    "id": "top-p",
+    "term": "Top-p",
+    "definition": "A sampling method restricting choices to a cumulative-probability set.",
+    "example": "Sampling from a probability mass selected by a threshold.",
+    "firstDay": 6,
+    "sourceIds": [
+      "openai-prompting"
+    ]
+  },
+  {
+    "id": "context-window",
+    "term": "Context window",
+    "definition": "A model/API capacity for information considered in a request, with provider-specific accounting.",
+    "example": "Instructions, messages, evidence and reserved output share a budget.",
+    "firstDay": 6,
+    "sourceIds": [
+      "openai-responses"
+    ]
+  },
+  {
+    "id": "embedding",
+    "term": "Embedding",
+    "definition": "A learned numerical representation of an input.",
+    "example": "A sentence vector used for semantic search.",
+    "firstDay": 7,
+    "sourceIds": [
+      "sbert-semantic"
+    ]
+  },
+  {
+    "id": "attention",
+    "term": "Attention",
+    "definition": "A mechanism that computes weighted combinations of representations using context-dependent scores.",
+    "example": "Mixing information from earlier tokens.",
+    "firstDay": 7,
+    "sourceIds": [
+      "3b1b-attention"
+    ]
+  },
+  {
+    "id": "query-key-and-value",
+    "term": "Query, key and value",
+    "definition": "Representations used to compute attention matches and the information mixed.",
+    "example": "QK scores determine weights applied to V.",
+    "firstDay": 7,
+    "sourceIds": [
+      "attention-paper"
+    ]
+  },
+  {
+    "id": "causal-mask",
+    "term": "Causal mask",
+    "definition": "A constraint that blocks attention to future positions in autoregressive processing.",
+    "example": "Token three cannot attend to token four during prediction.",
+    "firstDay": 7,
+    "sourceIds": [
+      "attention-paper"
+    ]
+  },
+  {
+    "id": "transformer",
+    "term": "Transformer",
+    "definition": "A neural architecture organized around attention and feed-forward transformations.",
+    "example": "A decoder-only language model generating text.",
+    "firstDay": 7,
+    "sourceIds": [
+      "attention-paper"
+    ]
+  },
+  {
+    "id": "residual-connection",
+    "term": "Residual connection",
+    "definition": "Adding a block's input to its transformed output.",
+    "example": "Maintaining a direct information path across layers.",
+    "firstDay": 7,
+    "sourceIds": [
+      "attention-paper"
+    ]
+  },
+  {
+    "id": "pretraining",
+    "term": "Pretraining",
+    "definition": "Initial broad training that learns representations and patterns from a large dataset.",
+    "example": "Learning next-token prediction before task adaptation.",
+    "firstDay": 8,
+    "sourceIds": [
+      "hf-llm"
+    ]
+  },
+  {
+    "id": "fine-tuning",
+    "term": "Fine-tuning",
+    "definition": "Further parameter training to adapt a model.",
+    "example": "Adapting a model to a particular response style.",
+    "firstDay": 8,
+    "sourceIds": [
+      "hf-peft"
+    ]
+  },
+  {
+    "id": "sft",
+    "term": "SFT",
+    "definition": "Supervised fine-tuning using desired input/output demonstrations.",
+    "example": "Training on reviewed support-answer examples.",
+    "firstDay": 8,
+    "sourceIds": [
+      "hf-llm"
+    ]
+  },
+  {
+    "id": "rlhf",
+    "term": "RLHF",
+    "definition": "Reinforcement learning using a feedback-derived reward signal.",
+    "example": "Optimizing behavior using human preference information.",
+    "firstDay": 8,
+    "sourceIds": [
+      "dpo-paper"
+    ]
+  },
+  {
+    "id": "dpo",
+    "term": "DPO",
+    "definition": "Direct Preference Optimization, a preference-based training objective.",
+    "example": "Training from chosen/rejected response pairs.",
+    "firstDay": 8,
+    "sourceIds": [
+      "dpo-paper"
+    ]
+  },
+  {
+    "id": "model-card",
+    "term": "Model card",
+    "definition": "Documentation describing a model's intended use, data, limitations and metadata.",
+    "example": "Checking license and evaluation before downloading.",
+    "firstDay": 8,
+    "sourceIds": [
+      "hf-model-cards"
+    ]
+  },
+  {
+    "id": "hugging-face",
+    "term": "Hugging Face",
+    "definition": "An ecosystem of model/data repositories and machine-learning libraries.",
+    "example": "Using Transformers, Datasets, Tokenizers and PEFT.",
+    "firstDay": 8,
+    "sourceIds": [
+      "hf-llm"
+    ]
+  },
+  {
+    "id": "structured-output",
+    "term": "Structured output",
+    "definition": "Output constrained to a specified structure or schema.",
+    "example": "A support ticket with validated category and evidence fields.",
+    "firstDay": 9,
+    "sourceIds": [
+      "openai-structured"
+    ]
+  },
+  {
+    "id": "streaming",
+    "term": "Streaming",
+    "definition": "Incremental delivery of output before the full response is complete.",
+    "example": "Displaying partial text while handling completion and errors.",
+    "firstDay": 9,
+    "sourceIds": [
+      "openai-responses"
+    ]
+  },
+  {
+    "id": "prompt-engineering",
+    "term": "Prompt engineering",
+    "definition": "Designing instructions, examples and output requirements for a task.",
+    "example": "A versioned prompt with evidence boundaries.",
+    "firstDay": 10,
+    "sourceIds": [
+      "openai-prompting"
+    ]
+  },
+  {
+    "id": "context-engineering",
+    "term": "Context engineering",
+    "definition": "Selecting and organizing useful information supplied to a model.",
+    "example": "Choosing relevant history, documents and tool schemas.",
+    "firstDay": 10,
+    "sourceIds": [
+      "claude-context"
+    ]
+  },
+  {
+    "id": "hallucination",
+    "term": "Hallucination",
+    "definition": "Generated content that is false, unsupported or inconsistent with the applicable evidence.",
+    "example": "Inventing a refund exception absent from policy.",
+    "firstDay": 10,
+    "sourceIds": [
+      "claude-hallucinations"
+    ]
+  },
+  {
+    "id": "grounding",
+    "term": "Grounding",
+    "definition": "Tying an answer to relevant external evidence or observations.",
+    "example": "Answering using retrieved policy passages.",
+    "firstDay": 10,
+    "sourceIds": [
+      "claude-hallucinations"
+    ]
+  },
+  {
+    "id": "abstention",
+    "term": "Abstention",
+    "definition": "Declining to provide an unsupported answer or requesting needed information.",
+    "example": "Saying the available documents do not specify the limit.",
+    "firstDay": 10,
+    "sourceIds": [
+      "claude-hallucinations"
+    ]
+  },
+  {
+    "id": "cosine-similarity",
+    "term": "Cosine similarity",
+    "definition": "A normalized dot product comparing vector direction.",
+    "example": "Ranking a query against sentence embeddings.",
+    "firstDay": 11,
+    "sourceIds": [
+      "sbert-semantic"
+    ]
+  },
+  {
+    "id": "dense-retrieval",
+    "term": "Dense retrieval",
+    "definition": "Searching using dense vector representations.",
+    "example": "Finding a paraphrased troubleshooting question.",
+    "firstDay": 11,
+    "sourceIds": [
+      "sbert-semantic"
+    ]
+  },
+  {
+    "id": "sparse-retrieval",
+    "term": "Sparse retrieval",
+    "definition": "Searching using sparse feature representations, often lexical.",
+    "example": "Matching exact error codes or terms.",
+    "firstDay": 14,
+    "sourceIds": [
+      "sbert-rerank"
+    ]
+  },
+  {
+    "id": "vector-index",
+    "term": "Vector index",
+    "definition": "A data structure for searching vectors.",
+    "example": "A FAISS Flat or HNSW index.",
+    "firstDay": 12,
+    "sourceIds": [
+      "faiss"
+    ]
+  },
+  {
+    "id": "vector-database",
+    "term": "Vector database",
+    "definition": "A storage/search system providing vector retrieval plus operational features.",
+    "example": "Storing vectors with document metadata and updates.",
+    "firstDay": 12,
+    "sourceIds": [
+      "pgvector"
+    ]
+  },
+  {
+    "id": "ann",
+    "term": "ANN",
+    "definition": "Approximate nearest-neighbor search trading exactness for efficiency.",
+    "example": "Searching a large embedding collection with an index.",
+    "firstDay": 12,
+    "sourceIds": [
+      "faiss"
+    ]
+  },
+  {
+    "id": "hnsw-graph",
+    "term": "HNSW graph",
+    "definition": "A layered neighbor graph used to navigate vector similarity.",
+    "example": "Links between nearby vectors, not business relationships.",
+    "firstDay": 12,
+    "sourceIds": [
+      "faiss"
+    ]
+  },
+  {
+    "id": "chunking",
+    "term": "Chunking",
+    "definition": "Splitting source material into retrievable units while preserving context.",
+    "example": "Creating heading-aware chunks with source IDs.",
+    "firstDay": 12,
+    "sourceIds": [
+      "graphrag-docs"
+    ]
+  },
+  {
+    "id": "rag",
+    "term": "RAG",
+    "definition": "Retrieval-augmented generation: supplying retrieved evidence to a generator.",
+    "example": "Search policy documents, then compose a cited answer.",
+    "firstDay": 13,
+    "sourceIds": [
+      "rag-paper"
+    ]
+  },
+  {
+    "id": "reranker",
+    "term": "Reranker",
+    "definition": "A second-stage scorer that reorders a candidate set.",
+    "example": "A cross-encoder checking query/passage relevance.",
+    "firstDay": 14,
+    "sourceIds": [
+      "sbert-rerank"
+    ]
+  },
+  {
+    "id": "cross-encoder",
+    "term": "Cross-encoder",
+    "definition": "A model processing a pair jointly to score their relationship.",
+    "example": "Scoring a question and retrieved passage together.",
+    "firstDay": 14,
+    "sourceIds": [
+      "sbert-rerank"
+    ]
+  },
+  {
+    "id": "hybrid-retrieval",
+    "term": "Hybrid retrieval",
+    "definition": "Combining complementary retrieval methods such as lexical and dense search.",
+    "example": "Fusing error-code matching with semantic rankings.",
+    "firstDay": 14,
+    "sourceIds": [
+      "contextual-retrieval"
+    ]
+  },
+  {
+    "id": "recall-k",
+    "term": "Recall@k",
+    "definition": "The fraction of relevant items recovered within the top k results, under a stated relevance definition.",
+    "example": "How many gold documents occur in the top three.",
+    "firstDay": 14,
+    "sourceIds": [
+      "sbert-semantic"
+    ]
+  },
+  {
+    "id": "mrr",
+    "term": "MRR",
+    "definition": "Mean reciprocal rank of the first relevant result across queries.",
+    "example": "A relevant result ranked first contributes one; second contributes one-half.",
+    "firstDay": 14,
+    "sourceIds": [
+      "ragas"
+    ]
+  },
+  {
+    "id": "knowledge-graph",
+    "term": "Knowledge graph",
+    "definition": "A representation of entities and meaningful relations.",
+    "example": "Service depends on database; team owns service.",
+    "firstDay": 15,
+    "sourceIds": [
+      "neo4j-graph"
+    ]
+  },
+  {
+    "id": "property-graph",
+    "term": "Property graph",
+    "definition": "A graph with properties on nodes and relationships, often with labels/types.",
+    "example": "A dependency edge with a source-document property.",
+    "firstDay": 15,
+    "sourceIds": [
+      "neo4j-graph"
+    ]
+  },
+  {
+    "id": "rdf",
+    "term": "RDF",
+    "definition": "A graph data model expressing statements as subject-predicate-object triples.",
+    "example": "Service-A, depends-on, Database-B.",
+    "firstDay": 15,
+    "sourceIds": [
+      "neo4j-graph"
+    ]
+  },
+  {
+    "id": "ontology",
+    "term": "Ontology",
+    "definition": "A specification of domain categories and relation meaning.",
+    "example": "Defining which entities count as services and teams.",
+    "firstDay": 15,
+    "sourceIds": [
+      "neo4j-graph"
+    ]
+  },
+  {
+    "id": "entity-resolution",
+    "term": "Entity resolution",
+    "definition": "Deciding which mentions identify the same real-world entity.",
+    "example": "Mapping AuthSvc and Auth Service to one service ID.",
+    "firstDay": 15,
+    "sourceIds": [
+      "graphrag-docs"
+    ]
+  },
+  {
+    "id": "graphrag",
+    "term": "GraphRAG",
+    "definition": "Retrieval/generation using graph-derived information; Microsoft GraphRAG is one specific implementation.",
+    "example": "Using verified dependency paths or community summaries as evidence.",
+    "firstDay": 16,
+    "sourceIds": [
+      "graphrag-docs"
+    ]
+  },
+  {
+    "id": "computation-graph",
+    "term": "Computation graph",
+    "definition": "A graph of numerical operations and their dependencies.",
+    "example": "Autograd follows operations to compute derivatives.",
+    "firstDay": 4,
+    "sourceIds": [
+      "pytorch-basics"
+    ]
+  },
+  {
+    "id": "workflow-graph",
+    "term": "Workflow graph",
+    "definition": "A graph of executable steps and control-flow transitions.",
+    "example": "Route a question to retrieval or status lookup.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph"
+    ]
+  },
+  {
+    "id": "tool-calling",
+    "term": "Tool calling",
+    "definition": "A contract where a model proposes a capability invocation and a runtime executes it.",
+    "example": "Proposing get_service_status with a validated service ID.",
+    "firstDay": 17,
+    "sourceIds": [
+      "openai-tools"
+    ]
+  },
+  {
+    "id": "agent",
+    "term": "Agent",
+    "definition": "A system in which a model can direct steps or tool use within a controlled loop.",
+    "example": "Inspecting status, retrieving a runbook and proposing a ticket.",
+    "firstDay": 17,
+    "sourceIds": [
+      "effective-agents"
+    ]
+  },
+  {
+    "id": "react",
+    "term": "ReAct",
+    "definition": "A research pattern interleaving reasoning with actions and observations.",
+    "example": "Using a tool result to choose the next step.",
+    "firstDay": 17,
+    "sourceIds": [
+      "react-paper"
+    ]
+  },
+  {
+    "id": "langchain",
+    "term": "LangChain",
+    "definition": "A framework with model/tool integrations and prebuilt agent patterns.",
+    "example": "Rebuilding a raw Python tool loop with create_agent.",
+    "firstDay": 18,
+    "sourceIds": [
+      "langchain"
+    ]
+  },
+  {
+    "id": "langgraph",
+    "term": "LangGraph",
+    "definition": "A lower-level runtime/framework for stateful agent and workflow orchestration.",
+    "example": "A branching workflow with checkpoints and approval interrupts.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph"
+    ]
+  },
+  {
+    "id": "langsmith",
+    "term": "LangSmith",
+    "definition": "A platform for tracing, evaluation and related agent development operations.",
+    "example": "Inspecting model/tool spans for a failed run.",
+    "firstDay": 18,
+    "sourceIds": [
+      "langsmith"
+    ]
+  },
+  {
+    "id": "state",
+    "term": "State",
+    "definition": "The information an execution carries between steps.",
+    "example": "Question, evidence, errors and pending action.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph-graph"
+    ]
+  },
+  {
+    "id": "reducer",
+    "term": "Reducer",
+    "definition": "A rule for combining state updates.",
+    "example": "Appending message updates rather than overwriting a list.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph-graph"
+    ]
+  },
+  {
+    "id": "checkpoint",
+    "term": "Checkpoint",
+    "definition": "Persisted execution state that supports inspection and resumption.",
+    "example": "A paused workflow awaiting approval.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph-persistence"
+    ]
+  },
+  {
+    "id": "thread-id",
+    "term": "Thread ID",
+    "definition": "An identifier grouping a persisted workflow/conversation execution.",
+    "example": "Resuming the same approval state after restart.",
+    "firstDay": 19,
+    "sourceIds": [
+      "langgraph-persistence"
+    ]
+  },
+  {
+    "id": "long-term-memory",
+    "term": "Long-term memory",
+    "definition": "Selected information persisted across interactions under an explicit policy.",
+    "example": "A scoped preference with provenance and expiry.",
+    "firstDay": 20,
+    "sourceIds": [
+      "claude-memory"
+    ]
+  },
+  {
+    "id": "compaction",
+    "term": "Compaction",
+    "definition": "Reducing context size while trying to retain important information.",
+    "example": "Summarizing older conversation turns.",
+    "firstDay": 20,
+    "sourceIds": [
+      "claude-context"
+    ]
+  },
+  {
+    "id": "interrupt",
+    "term": "Interrupt",
+    "definition": "A workflow pause waiting for external input.",
+    "example": "Requesting approval before a tool changes state.",
+    "firstDay": 21,
+    "sourceIds": [
+      "langgraph-interrupts"
+    ]
+  },
+  {
+    "id": "idempotency",
+    "term": "Idempotency",
+    "definition": "A property or mechanism making repeated application of an operation have the intended single effect.",
+    "example": "Retrying ticket creation with the same operation key.",
+    "firstDay": 21,
+    "sourceIds": [
+      "langgraph-durable"
+    ]
+  },
+  {
+    "id": "mcp",
+    "term": "MCP",
+    "definition": "Model Context Protocol, connecting hosts and servers offering tools, resources and prompts.",
+    "example": "Exposing a read-only service-status capability.",
+    "firstDay": 22,
+    "sourceIds": [
+      "mcp"
+    ]
+  },
+  {
+    "id": "a2a",
+    "term": "A2A",
+    "definition": "A protocol for agent-to-agent task communication.",
+    "example": "Delegating a task and receiving an artifact.",
+    "firstDay": 22,
+    "sourceIds": [
+      "a2a"
+    ]
+  },
+  {
+    "id": "agent-harness",
+    "term": "Agent harness",
+    "definition": "The runtime scaffolding around a model, including tools, state and execution controls.",
+    "example": "An SDK managing an agent's loop and environment.",
+    "firstDay": 22,
+    "sourceIds": [
+      "openai-agents"
+    ]
+  },
+  {
+    "id": "trace",
+    "term": "Trace",
+    "definition": "A record of observable execution steps and metadata.",
+    "example": "Model call, tool call, retrieval and validation spans.",
+    "firstDay": 23,
+    "sourceIds": [
+      "langsmith"
+    ]
+  },
+  {
+    "id": "evaluation",
+    "term": "Evaluation",
+    "definition": "A defined procedure for assessing behavior against criteria.",
+    "example": "Checking answers, evidence and actual tool effects.",
+    "firstDay": 23,
+    "sourceIds": [
+      "agent-evals"
+    ]
+  },
+  {
+    "id": "llm-as-judge",
+    "term": "LLM-as-judge",
+    "definition": "Using a language model to score outputs under a rubric.",
+    "example": "A calibrated support-answer grader checked against human labels.",
+    "firstDay": 23,
+    "sourceIds": [
+      "agent-evals"
+    ]
+  },
+  {
+    "id": "benchmark",
+    "term": "Benchmark",
+    "definition": "A standardized task set and evaluation procedure.",
+    "example": "SWE-bench evaluates software issue-solving under a stated harness.",
+    "firstDay": 23,
+    "sourceIds": [
+      "swebench"
+    ]
+  },
+  {
+    "id": "prompt-injection",
+    "term": "Prompt injection",
+    "definition": "Untrusted content attempting to redirect an AI system's instructions or actions.",
+    "example": "A retrieved document demanding secret disclosure.",
+    "firstDay": 24,
+    "sourceIds": [
+      "owasp-llm"
+    ]
+  },
+  {
+    "id": "authorization",
+    "term": "Authorization",
+    "definition": "Deciding whether a principal may access data or perform an action.",
+    "example": "The server checks permission before creating a ticket.",
+    "firstDay": 24,
+    "sourceIds": [
+      "openai-guardrails"
+    ]
+  },
+  {
+    "id": "guardrail",
+    "term": "Guardrail",
+    "definition": "A validation or control layer around model inputs, outputs or tools.",
+    "example": "Rejecting a tool argument outside an allowlist.",
+    "firstDay": 24,
+    "sourceIds": [
+      "openai-guardrails"
+    ]
+  },
+  {
+    "id": "answer-cache",
+    "term": "Answer cache",
+    "definition": "Storage of completed responses for reuse under suitable validity and scope rules.",
+    "example": "Reusing a policy answer until its source version changes.",
+    "firstDay": 25,
+    "sourceIds": [
+      "openai-cache"
+    ]
+  },
+  {
+    "id": "embedding-cache",
+    "term": "Embedding cache",
+    "definition": "Storage of vectors for unchanged content/model combinations.",
+    "example": "Avoiding re-embedding an identical document.",
+    "firstDay": 25,
+    "sourceIds": [
+      "sbert-semantic"
+    ]
+  },
+  {
+    "id": "semantic-cache",
+    "term": "Semantic cache",
+    "definition": "Reusing an output for a similar query, requiring careful correctness and scope checks.",
+    "example": "Potentially reusing a FAQ response after validating applicability.",
+    "firstDay": 25,
+    "sourceIds": [
+      "openai-cache"
+    ]
+  },
+  {
+    "id": "prompt-prefix-cache",
+    "term": "Prompt-prefix cache",
+    "definition": "Reuse of processing for a repeated prompt prefix.",
+    "example": "Stable instructions can benefit from provider cache behavior.",
+    "firstDay": 25,
+    "sourceIds": [
+      "openai-cache"
+    ]
+  },
+  {
+    "id": "kv-cache",
+    "term": "KV cache",
+    "definition": "Stored attention keys/values used to avoid recomputation in generation or reused prefix processing.",
+    "example": "Retaining prior-token state while decoding.",
+    "firstDay": 25,
+    "sourceIds": [
+      "openai-cache"
+    ]
+  },
+  {
+    "id": "ttft",
+    "term": "TTFT",
+    "definition": "Time to first token.",
+    "example": "The delay before streamed output starts.",
+    "firstDay": 25,
+    "sourceIds": [
+      "vllm"
+    ]
+  },
+  {
+    "id": "throughput",
+    "term": "Throughput",
+    "definition": "Work completed per unit time under a stated workload.",
+    "example": "Requests completed per second at a chosen concurrency.",
+    "firstDay": 25,
+    "sourceIds": [
+      "vllm"
+    ]
+  },
+  {
+    "id": "p95-latency",
+    "term": "p95 latency",
+    "definition": "A measured latency percentile: about 95% of observed requests were no slower.",
+    "example": "A tail-latency statistic, meaningful with sample size and conditions.",
+    "firstDay": 25,
+    "sourceIds": [
+      "aws-observability"
+    ]
+  },
+  {
+    "id": "quantization",
+    "term": "Quantization",
+    "definition": "Representing numerical values with lower precision.",
+    "example": "Reducing model weight storage at a possible quality cost.",
+    "firstDay": 25,
+    "sourceIds": [
+      "vllm"
+    ]
+  },
+  {
+    "id": "multimodal-model",
+    "term": "Multimodal model",
+    "definition": "A model handling more than one data modality.",
+    "example": "Answering a question about an image.",
+    "firstDay": 26,
+    "sourceIds": [
+      "hf-multimodal"
+    ]
+  },
+  {
+    "id": "ocr",
+    "term": "OCR",
+    "definition": "Optical character recognition: extracting text from visual documents.",
+    "example": "Reading an error code from a screenshot.",
+    "firstDay": 26,
+    "sourceIds": [
+      "hf-multimodal"
+    ]
+  },
+  {
+    "id": "lora",
+    "term": "LoRA",
+    "definition": "Low-Rank Adaptation: training compact adapter updates while freezing most base parameters.",
+    "example": "Adapting response behavior with fewer trainable parameters.",
+    "firstDay": 27,
+    "sourceIds": [
+      "hf-peft"
+    ]
+  },
+  {
+    "id": "distillation",
+    "term": "Distillation",
+    "definition": "Training a student model using a teacher's behavior or outputs.",
+    "example": "A smaller classifier learns from a larger model's predictions.",
+    "firstDay": 27,
+    "sourceIds": [
+      "distillation-paper"
+    ]
+  },
+  {
+    "id": "model-drift",
+    "term": "Model drift",
+    "definition": "A change in data or system behavior that can degrade previously measured performance.",
+    "example": "New product terminology reduces retrieval or classification quality.",
+    "firstDay": 29,
+    "sourceIds": [
+      "google-ml"
+    ]
+  },
+  {
+    "id": "ablation",
+    "term": "Ablation",
+    "definition": "An experiment removing or changing one component to assess its contribution.",
+    "example": "Compare RAG with and without reranking.",
+    "firstDay": 14,
+    "sourceIds": [
+      "sbert-rerank"
+    ]
+  },
+  {
+    "id": "holdout",
+    "term": "Holdout",
+    "definition": "Evaluation data reserved from development and tuning.",
+    "example": "The final capstone question set.",
+    "firstDay": 3,
+    "sourceIds": [
+      "sklearn-evaluation"
+    ]
+  }
+]

@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background-color: theme("colors.surface.DEFAULT");
+  color: theme("colors.ink.DEFAULT");
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus for keyboard users on all interactive elements. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid theme("colors.action.DEFAULT");
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Readable prose defaults inside lesson bodies. */
+.prose-reading {
+  max-width: 72ch;
+  line-height: 1.7;
+}
+.prose-reading p {
+  margin-bottom: 1rem;
+}
+
+/* Code blocks must never break page layout. */
+pre,
+code {
+  font-family: var(--font-mono);
+}
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: theme("colors.navy.DEFAULT");
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 6px 0;
+}
+.skip-link:focus {
+  left: 0;
+}
