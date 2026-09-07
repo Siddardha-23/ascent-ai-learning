@@ -175,7 +175,7 @@ const baseStateShape = {
 export const learnerStateSchema = z.object({
   schemaVersion: z.literal(2),
   ...baseStateShape,
-  v2: v2BlockSchema.default(emptyV2Block()),
+  v2: v2BlockSchema.default(() => emptyV2Block()),
 });
 export type LearnerState = z.infer<typeof learnerStateSchema>;
 

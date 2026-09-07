@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { isValidProfileId } from "@/lib/progress/schema";
 import { getAIProvider } from "@/lib/ai/factory";
 import { aiConfig } from "@/lib/ai/config";
-import { enhancementInputSchema } from "@/lib/ai/provider";
-import { allowCall, remainingCalls, cacheKey } from "@/lib/ai/rate-limit";
+import {
+  enhancementInputSchema,
+  type EnhancementInput,
+} from "@/lib/ai/provider";
+import {
+  allowCall,
+  remainingCalls,
+  cacheKey,
+  getCached,
+  setCached,
+  dedupe,
+  type CachedEnhancement,
+} from "@/lib/ai/rate-limit";
 import { CONTENT_VERSION } from "@/lib/content/content";
 
 export const dynamic = "force-dynamic";
@@ -72,55 +84,86 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
+  const input = parsed.data;
 
-  // Per-profile daily budget. Exhausted -> honest deterministic fallback (200).
-  if (!allowCall(profile, cfg.maxCallsPerProfilePerDay)) {
-    const { DeterministicProvider } = await import("@/lib/ai/deterministic");
-    const result = await new DeterministicProvider().enhance(parsed.data);
+  // Cache key from the ACTUAL validated input (server-side only; never in a
+  // response or log). The salted hash means raw text is not stored in the key.
+  const modelStrategy = cfg.model ?? "openrouter/free";
+  const key = cacheKey({
+    templateVersion: "ai-2026-09-05.1",
+    modelStrategy,
+    contentVersion: CONTENT_VERSION,
+    sanitizedInput: canonicalInput(input),
+  });
+
+  // 1) Serve from cache without consuming the daily budget or calling out.
+  const cached = getCached(key);
+  if (cached) {
     return noStore({
-      ...result,
-      budgetExhausted: true,
-      remaining: 0,
-      cacheMeta: buildCacheMeta(parsed.data.kind, result.model, result.templateVersion, result.outcome),
+      output: cached.output,
+      fromFallback: false,
+      outcome: "ok",
+      model: cached.model,
+      templateVersion: cached.templateVersion,
+      cachedHit: true,
+      remaining: remainingCalls(profile, cfg.maxCallsPerProfilePerDay),
+      cacheMeta: { key, templateVersion: cached.templateVersion, model: cached.model, createdAt: new Date().toISOString(), outcome: "ok" },
     });
   }
 
+  // 2) Per-profile daily budget. Exhausted -> honest deterministic fallback.
+  if (!allowCall(profile, cfg.maxCallsPerProfilePerDay)) {
+    const { DeterministicProvider } = await import("@/lib/ai/deterministic");
+    const result = await new DeterministicProvider().enhance(input);
+    return noStore({
+      output: result.output,
+      fromFallback: true,
+      outcome: result.outcome,
+      model: result.model,
+      templateVersion: result.templateVersion,
+      budgetExhausted: true,
+      remaining: 0,
+      cacheMeta: { key, templateVersion: result.templateVersion, model: result.model, createdAt: new Date().toISOString(), outcome: result.outcome },
+    });
+  }
+
+  // 3) Dedupe concurrent identical requests, then call the provider once.
   const provider = getAIProvider();
-  const result = await provider.enhance(parsed.data);
+  let outcome = "ok";
+  let fromFallback = false;
+  const { value, deduped } = await dedupe(key, async () => {
+    const r = await provider.enhance(input);
+    outcome = r.outcome;
+    fromFallback = r.fromFallback;
+    const v: CachedEnhancement = {
+      output: r.output,
+      model: r.model,
+      templateVersion: r.templateVersion,
+    };
+    // Only cache genuine successes (never a fallback/error) so a later retry
+    // can still reach the provider.
+    if (r.outcome === "ok" && !r.fromFallback) setCached(key, v);
+    return v;
+  });
 
   return noStore({
-    output: result.output,
-    fromFallback: result.fromFallback,
-    outcome: result.outcome,
-    model: result.model,
-    templateVersion: result.templateVersion,
-    requestId: result.requestId,
-    tokenUsage: result.tokenUsage,
+    output: value.output,
+    fromFallback,
+    outcome,
+    model: value.model,
+    templateVersion: value.templateVersion,
+    deduped,
     remaining: remainingCalls(profile, cfg.maxCallsPerProfilePerDay),
-    cacheMeta: buildCacheMeta(parsed.data.kind, result.model, result.templateVersion, result.outcome),
+    cacheMeta: { key, templateVersion: value.templateVersion, model: value.model, createdAt: new Date().toISOString(), outcome },
   });
 }
 
-/** Build cache metadata (no raw learner text). Client may store this in ai.cache. */
-function buildCacheMeta(
-  kind: string,
-  model: string,
-  templateVersion: string,
-  outcome: string,
-) {
-  const key = cacheKey({
-    templateVersion,
-    modelStrategy: model,
-    contentVersion: CONTENT_VERSION,
-    // Only the kind is used as the sanitized input marker here; the route never
-    // hashes raw learner text into anything returned to the client.
-    sanitizedInput: kind,
-  });
-  return {
-    key,
-    templateVersion,
-    model,
-    createdAt: new Date().toISOString(),
-    outcome,
-  };
+/**
+ * Deterministic, PII-safe canonical serialization of the validated input for
+ * hashing into a cache key. This value is only ever fed into a salted SHA-256
+ * hash (see cacheKey); it is never returned to the client or logged.
+ */
+function canonicalInput(input: EnhancementInput): string {
+  const stable = JSON.stringify(input, Object.keys(input).sort());
+  return createHash("sha256").update(stable).digest("hex");
 }

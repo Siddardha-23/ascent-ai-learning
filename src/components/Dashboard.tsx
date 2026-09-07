@@ -55,6 +55,11 @@ export function Dashboard() {
   const plan = activePlan(state);
   const hasAssessment = (state.v2?.assessment?.results?.length ?? 0) > 0;
   const showOnboardingChoice = !plan && !hasAssessment;
+  // Separate, non-canonical progress signals (never folded into the % above).
+  const validatedCount = state.v2?.validatedPriorKnowledge?.length ?? 0;
+  const bridgeCount = plan
+    ? plan.items.filter((i) => i.status === "foundation").length
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -160,6 +165,40 @@ export function Dashboard() {
           completed work, not an estimate.
         </p>
       </Card>
+
+      {/* Separate progress signals — kept OUT of the canonical % above so it
+          is never inflated by prerequisites, validated prior knowledge, or
+          optional work (R3/§9). */}
+      {(validatedCount > 0 || bridgeCount > 0) && (
+        <Card>
+          <SectionTitle>Tracked separately (not counted in course %)</SectionTitle>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg bg-surface-sunken p-3 text-sm">
+              <span className="text-2xl font-bold text-navy">{validatedCount}</span>
+              <div className="text-ink-muted">
+                skill area(s) with validated prior knowledge
+              </div>
+              <div className="mt-0.5 text-xs text-ink-faint">
+                Recorded from your assessment — a faster revision lane, not completed
+                canonical tasks.
+              </div>
+            </div>
+            <div className="rounded-lg bg-surface-sunken p-3 text-sm">
+              <span className="text-2xl font-bold text-navy">{bridgeCount}</span>
+              <div className="text-ink-muted">prerequisite bridge(s) in your plan</div>
+              <div className="mt-0.5 text-xs text-ink-faint">
+                Extra foundation units — they add estimated time but are not part of
+                the 30-unit course completion.
+              </div>
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-ink-faint">
+            See <Link href="/learn/skills" className="text-action hover:underline">Skills</Link>{" "}
+            and <Link href="/learn/plan" className="text-action hover:underline">My plan</Link>{" "}
+            for details.
+          </p>
+        </Card>
+      )}
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

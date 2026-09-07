@@ -97,3 +97,44 @@ test("no horizontally clipped content on the dashboard", async ({ page }) => {
   });
   expect(overflow).toBeLessThanOrEqual(2);
 });
+
+
+test("keyboard: focus works and nav is keyboard-operable", async ({ page, isMobile }) => {
+  await enterProfile(page, uniqueName("e2e-kbd"));
+  // An interactive element receives focus on Tab.
+  await page.keyboard.press("Tab");
+  const focusedTag = await page.evaluate(() => document.activeElement?.tagName ?? "");
+  expect(["A", "BUTTON", "INPUT"]).toContain(focusedTag);
+
+  if (isMobile) {
+    // On mobile the nav is behind a keyboard-operable toggle.
+    const toggle = page.getByRole("button", { name: /toggle navigation/i });
+    await toggle.focus();
+    await page.keyboard.press("Enter");
+    await page.getByRole("link", { name: "Course", exact: true }).first().click();
+  } else {
+    const course = page.getByRole("link", { name: "Course", exact: true }).first();
+    await course.focus();
+    await page.keyboard.press("Enter");
+  }
+  await expect(page).toHaveURL(/\/learn\/course$/);
+  await expect(page.getByRole("heading", { name: /course map/i })).toBeVisible();
+});
+
+test("reduced-motion: lesson renders and a visual is present with reduced motion", async ({
+  browser,
+}) => {
+  // Emulate prefers-reduced-motion; animated visuals must still render + be usable.
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.goto("/");
+  const name = uniqueName("e2e-rm");
+  await page.getByLabel(/name or username/i).fill(name);
+  await page.getByRole("button", { name: /open my space/i }).click();
+  await expect(page).toHaveURL(/\/learn$/);
+  await page.goto("/learn/day/7"); // day 7 has the attention visual
+  await expect(page.getByRole("heading", { name: /transformer/i })).toBeVisible();
+  // A visual with its accessible text description is present.
+  await expect(page.getByText(/Text description of this visual/i).first()).toBeVisible();
+  await context.close();
+});

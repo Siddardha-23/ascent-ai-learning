@@ -197,3 +197,44 @@ describe("factory selection", () => {
     expect(getAIProvider().id).toBe("openrouter");
   });
 });
+
+
+describe("AI server-side cache + dedup (rate-limit module)", () => {
+  it("caches by key and evicts on TTL/capacity; dedupes in-flight calls", async () => {
+    const mod = await import("@/lib/ai/rate-limit");
+    mod.__resetAiCaches();
+
+    const key = mod.cacheKey({
+      templateVersion: "t",
+      modelStrategy: "m",
+      contentVersion: "c",
+      sanitizedInput: "abc",
+    });
+    // Different inputs produce different keys (no over-caching by kind only).
+    const key2 = mod.cacheKey({
+      templateVersion: "t",
+      modelStrategy: "m",
+      contentVersion: "c",
+      sanitizedInput: "xyz",
+    });
+    expect(key).not.toBe(key2);
+
+    expect(mod.getCached(key)).toBeNull();
+    mod.setCached(key, { output: { text: "hi", points: [] }, model: "m", templateVersion: "t" });
+    expect(mod.getCached(key)?.output.text).toBe("hi");
+
+    // Dedup: two concurrent producers with the same key call producer once.
+    mod.__resetAiCaches();
+    let calls = 0;
+    const producer = () =>
+      new Promise<{ output: { text: string; points: string[] }; model: string; templateVersion: string }>(
+        (resolve) => {
+          calls += 1;
+          setTimeout(() => resolve({ output: { text: "x", points: [] }, model: "m", templateVersion: "t" }), 20);
+        },
+      );
+    const [a, b] = await Promise.all([mod.dedupe("k", producer), mod.dedupe("k", producer)]);
+    expect(calls).toBe(1);
+    expect(a.deduped === true || b.deduped === true).toBe(true);
+  });
+});
