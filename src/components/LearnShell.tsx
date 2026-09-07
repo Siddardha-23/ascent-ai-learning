@@ -10,6 +10,8 @@ import { ConflictBanner } from "@/components/ConflictBanner";
 const NAV = [
   { href: "/learn", label: "Dashboard", exact: true },
   { href: "/learn/course", label: "Course" },
+  { href: "/learn/plan", label: "My plan" },
+  { href: "/learn/skills", label: "Skills" },
   { href: "/learn/aids", label: "Aids" },
   { href: "/learn/resources", label: "Resources" },
   { href: "/learn/glossary", label: "Glossary" },

@@ -126,3 +126,59 @@ Version 1 · 2026-09-05 · This is a build specification, not evidence that feat
 11. Local mode runs with no API keys; cloud mode uses real configured storage and survives an independent session.
 12. Verify keyboard/mobile navigation and production build; inspect source integrity with the package validator.
 
+
+
+---
+
+# v2 requirements — Adaptive learning extension
+
+Version 2 · Additive and non-breaking. The v1 requirements above remain authoritative for the standard course.
+
+## R13 — Standard path stays default and intact
+
+- The unchanged, versioned 30-unit curriculum SHALL remain the default path and the common destination for every learner, fully usable with no AI API key.
+- Stable lesson IDs, task IDs, resources, notes, evidence, completion rules and the capstone SHALL survive the extension. Existing `harshith`/`aparna` IDs and saved state SHALL be preserved.
+- A learner MAY dismiss personalization, start it later, save/resume, retake, preview a revision, and return to an earlier plan revision.
+- "30 days" SHALL mean 30 destination learning units. Prerequisite bridge units MAY precede or sit beside them and add estimated time, but SHALL NOT be renamed day 31, 32, …
+
+## R14 — Curated competency & prerequisite model
+
+- Authored, versioned, build-time-validated: `competencies`, `prerequisiteModules`, `assessmentBank`, `lessonEnhancements`, each with stable IDs.
+- Every source reference SHALL resolve to the canonical catalog or a newly recorded source (title, publisher, direct URL, access/date notes, purpose). No model-invented URLs.
+- Cover ≥ the 7 prerequisite areas (CLI/Git, Python/logic, web/HTTP, frontend, backend/data, math/data, delivery). The composer SHALL select only evidence-supported gaps; no learner is forced through every prerequisite.
+
+## R15 — Optional adaptive assessment
+
+- Accessible, responsive wizard, normally 12–18 min, saving after every step, with progress indicator, back/next, keyboard support, "I'm not sure" options, glossary help, and resume-later.
+- Collect experience/languages, per-area familiarity, confidence + recency (not relied on alone), verified diagnostics (predict code, order a flow, choose a metric, identify a boundary, explain a system), weekly time, session size, teaching-mode preferences, compute/API constraints, cloud preference.
+- The destination is fixed (practical GenAI + agentic engineering). The learner SHALL NOT be able to select a weaker destination that removes core competencies.
+- Deterministic transparent scoring with exactly four per-area states: Needs a foundation / Ready to learn the course topic / Verify prior knowledge / Validated prior knowledge, each with an explanation of why and which evidence mattered. Retakes retained with history. Self-report alone SHALL NOT award course completion.
+
+## R16 — Deterministic, reversible plan composition
+
+- A pure, unit-tested composer SHALL turn assessment result + preferences into a versioned `PlanRevision` without calling a model.
+- Plan items reference stable canonical lesson / prerequisite-module / presentation-variant IDs (no copying lesson bodies into learner state), with rationale, status (foundation/standard/revision/challenge/optional-depth), estimated minutes and dependencies. Destination competencies + capstone milestones stay unchanged.
+- A preview SHALL compare against the standard path and require explicit confirmation before activating. Switching/regenerating SHALL never erase progress; completed stable tasks stay complete. Provide Return to standard path and Restore previous plan. Validated prior knowledge is recorded separately from `completedTaskIds`.
+
+## R17 — Safe state migration
+
+- schemaVersion-2 learner state with explicit v1→v2 migration; bounded schemas for assessment, preferences, plan revisions/history, validated-prior-knowledge, AI consent/cache metadata, plus all v1 fields.
+- Backups upgrade to a new version while still importing valid v1 backups through migration, with a preview and content-version/profile checks. Course content stays outside mutable learner state; optional generated enhancements are stored by ID under a bounded namespace, never duplicating the curriculum per learner.
+
+## R18 — OpenRouter as optional enhancement only
+
+- A server-only `AIEnhancementProvider` interface with a deterministic no-AI provider SHALL make the full custom-plan flow work when AI is disabled, keyless, quota-exhausted, timed out, rejected, or output-invalid.
+- Allowed: friendly plan explanation from deterministic findings; bounded "connect what you know" text from allowlisted skill IDs + approved facts; alternate analogy/practice from a supplied lesson excerpt; rubric-based explain-back feedback labeled as AI, not truth or completion.
+- Disallowed: selecting prerequisites, ordering the plan, changing completion/grading; generating/replacing curriculum, sources, URLs, diagnostics, acceptance checks or safety policy; executing code/URLs/tools; receiving names/IDs/notes/reflections/evidence/links/secrets/full progress.
+- Consent required before the first call, revocable; no calls without consent. Prompts built server-side from allowlisted fields; learner text treated as untrusted and delimited; strict JSON re-validated with Zod; char/token bounds, 12s timeout, ≤1 retry, per-profile daily budget, dedupe; cache keyed by salted hash (no raw text/key in keys or logs). Key configured only as a server env var, never a client form.
+
+## R19 — Clearer, engaging lessons (presentation only)
+
+- Preserve current content/sources; enrich presentation with reusable authored blocks following the why→connect→mental-model→walkthrough→annotated-code→predict→play→misconception→explain-back→build rhythm, carrying the Atlas Support example across lessons.
+- Provide accurate, deterministic, accessible interactive visuals (flow, weighted sum/gradient, forward/backprop, tokenization+sampling labeled as simulation, attention+mask, embeddings/cosine/NN vs knowledge graph, RAG pipeline, HNSW vs knowledge vs workflow graph, tool loop, LangGraph, memory/cache taxonomy, evaluation/metrics, injection boundary). Every animation has play/pause/reset, text equivalent, keyboard control, visible focus, and reduced-motion support.
+- simple/deeper/implementation disclosure levels, persisted; required lab instructions and sources never hidden inside collapsed content.
+
+## R20 — Reliability, security, verification (extends R8/R10/R11)
+
+- Credentials and AI calls server-side; Zod-bounded I/O; same-origin/CSRF consistent with progress routes; rate-limited AI endpoint returning no stack traces/provider payloads; private Blob stays private with ETag conflict semantics for the larger state; local drafts preserved on conflict/failed activation/offline/AI failure; never execute learner code/URLs/tool calls; sanitize rendered code/Markdown; exact calculations/permissions/completion/policy gates stay deterministic.
+- Verification per prompt §11 (14 scenarios), migrate `next lint` to the ESLint CLI, and record actual command results; claim a check passed only if it ran.

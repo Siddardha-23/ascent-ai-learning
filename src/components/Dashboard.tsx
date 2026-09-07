@@ -17,8 +17,9 @@ import {
 } from "@/lib/progress/activity";
 import { nextMilestone } from "@/lib/milestones";
 import { localDateFor, formatMinutes } from "@/lib/date";
-import { Card, ProgressBar, SectionTitle, Stat, ProgressBar as Bar } from "@/components/ui";
+import { Card, ProgressBar, SectionTitle, Stat, ProgressBar as Bar, Pill } from "@/components/ui";
 import { WeeklyActivity } from "@/components/WeeklyActivity";
+import { activePlan } from "@/lib/plan/plan-view";
 
 export function Dashboard() {
   const { state, loading, displayName, storageMode } = useProgress();
@@ -51,6 +52,9 @@ export function Dashboard() {
   const totalLessons = getLessons().length;
 
   const isFresh = doneTasks === 0 && totalMin === 0;
+  const plan = activePlan(state);
+  const hasAssessment = (state.v2?.assessment?.results?.length ?? 0) > 0;
+  const showOnboardingChoice = !plan && !hasAssessment;
 
   return (
     <div className="space-y-6">
@@ -87,6 +91,62 @@ export function Dashboard() {
           </Link>
         </div>
       </Card>
+
+      {/* Onboarding choice (only before any plan/assessment exists) */}
+      {showOnboardingChoice && (
+        <Card>
+          <SectionTitle>Two ways to start</SectionTitle>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-navy-600/12 p-4">
+              <p className="font-semibold text-navy">Standard 30-unit path</p>
+              <p className="mt-1 text-sm text-ink-muted">
+                Follow the full course in order. Complete on its own, no setup.
+              </p>
+              <Link
+                href={`/learn/day/${resume.lesson.day}`}
+                className="mt-3 inline-block rounded-lg bg-action px-4 py-2 text-sm font-semibold text-white hover:bg-action-hover"
+              >
+                {isFresh ? "Start the standard path" : "Continue the standard path"}
+              </Link>
+            </div>
+            <div className="rounded-lg border border-navy-600/12 p-4">
+              <p className="font-semibold text-navy">
+                Create a plan around what I know <Pill tone="core">Optional</Pill>
+              </p>
+              <p className="mt-1 text-sm text-ink-muted">
+                A 12–18 min check proposes a personalized route to the same goal. You
+                can preview it before anything changes.
+              </p>
+              <Link
+                href="/learn/assessment"
+                className="mt-3 inline-block rounded-lg border border-action px-4 py-2 text-sm font-semibold text-action hover:bg-action-soft/40"
+              >
+                Take the skills check
+              </Link>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-ink-faint">
+            You can dismiss this and take the check later from the My plan tab.
+          </p>
+        </Card>
+      )}
+
+      {/* Active plan summary */}
+      {plan && (
+        <Card className="border-action/30">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <SectionTitle>Your personalized plan is active</SectionTitle>
+            <Link href="/learn/plan" className="text-sm text-action hover:underline">
+              View plan →
+            </Link>
+          </div>
+          <p className="text-sm text-ink-muted">
+            {plan.items.filter((i) => i.status === "foundation").length} bridge(s) ·{" "}
+            {plan.items.filter((i) => i.refType === "lesson" && i.status === "revision").length}{" "}
+            revision lane(s) · same destination as the standard course.
+          </p>
+        </Card>
+      )}
 
       {/* Overall progress */}
       <Card>

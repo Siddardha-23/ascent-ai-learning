@@ -4,7 +4,7 @@ import {
   put,
   BlobPreconditionFailedError,
 } from "@vercel/blob";
-import { learnerStateSchema, type LearnerState, type ProfileId } from "./schema";
+import { parseAndMigrate, type LearnerState, type ProfileId } from "./schema";
 import type {
   LoadResult,
   ProgressRepository,
@@ -63,7 +63,9 @@ export class BlobRepository implements ProgressRepository {
     } catch {
       throw new Error("Stored progress is not valid JSON");
     }
-    const state = learnerStateSchema.parse(parsed);
+    // Migrate v1 -> v2 on read so existing data is never lost.
+    const state = parseAndMigrate(parsed);
+    if (!state) throw new Error("Stored progress does not match a known schema version");
     return { state, revision: result.blob.etag, storageMode: this.mode };
   }
 

@@ -1,0 +1,273 @@
+{
+  "moduleVersion": "2026-09-05.v2.1",
+  "modules": [
+    {
+      "id": "pre-cli-git",
+      "title": "Command line, files and Git",
+      "skillArea": "cli-git",
+      "targetGap": "New to terminals, file paths, environments, packages and version control.",
+      "estimatedMinutes": 90,
+      "explanation": [
+        {
+          "heading": "Why this comes first",
+          "body": "Every lab runs commands, edits files in folders, installs packages and records progress in Git. A little fluency here removes friction from all 30 units."
+        },
+        {
+          "heading": "The mental model",
+          "body": "A terminal is a text conversation with your computer: you type a command, it runs, it prints a result. A path names where a file lives. Git records snapshots of your work so you can go back."
+        },
+        {
+          "heading": "The few commands you actually need",
+          "body": "List, change directory, make a folder, run a script, and the core Git cycle: status, add, commit.",
+          "code": "pwd            # where am I\nls             # what is here (dir on Windows PowerShell: Get-ChildItem)\ncd project     # go into a folder\npython app.py  # run a script\n\ngit status\ngit add app.py\ngit commit -m \"first working baseline\"",
+          "codeLang": "bash"
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "You edited two files. Which command records a snapshot of just one of them?",
+          "answer": "git add <that-file> then git commit -m \"...\" — staging selects what goes into the snapshot."
+        }
+      ],
+      "checkpoint": {
+        "question": "What is the difference between `git commit` and `git push`?",
+        "answer": "commit records a snapshot in your local history; push sends committed snapshots to a remote like GitHub."
+      },
+      "evidencePrompt": "Record the commands you ran and paste the output of `git log --oneline` for a small practice repo.",
+      "sourceIds": ["git-scm-book"],
+      "unlocksLessonIds": ["day-01"]
+    },
+    {
+      "id": "pre-python",
+      "title": "Programming logic and Python",
+      "skillArea": "programming-python",
+      "targetGap": "Little or no Python: values, control flow, functions, collections, errors, environments.",
+      "estimatedMinutes": 150,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "Python is the language of every lab. You do not need to be an expert — you need to read, write and debug small programs confidently."
+        },
+        {
+          "heading": "Mental model",
+          "body": "A program is data (values in variables and collections) plus decisions (if/else), repetition (loops) and reusable steps (functions). Errors are messages telling you exactly where a decision went wrong."
+        },
+        {
+          "heading": "Annotated example",
+          "body": "A function that filters a list. Notice the parameter, the loop, the condition and the return.",
+          "code": "def open_tickets(tickets):\n    result = []\n    for t in tickets:          # repetition\n        if t[\"status\"] == \"open\":  # decision\n            result.append(t)      # collect\n    return result             # reusable output\n\nprint(open_tickets([{\"status\": \"open\"}, {\"status\": \"closed\"}]))\n# -> [{'status': 'open'}]",
+          "codeLang": "python"
+        },
+        {
+          "heading": "Isolated environments",
+          "body": "Create a virtual environment per project so lab dependencies never collide.",
+          "code": "python -m venv .venv\n# activate, then:\npip install numpy",
+          "codeLang": "bash"
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "Rewrite open_tickets using a list comprehension.",
+          "answer": "[t for t in tickets if t[\"status\"] == \"open\"]"
+        }
+      ],
+      "checkpoint": {
+        "question": "What does a virtual environment give you?",
+        "answer": "An isolated set of installed packages for one project, so versions don't clash with other projects or the system Python."
+      },
+      "evidencePrompt": "Commit a small script with one function and a test, and note any error you fixed.",
+      "sourceIds": ["python-tutorial", "python-venv"],
+      "unlocksLessonIds": ["day-01", "day-02"]
+    },
+    {
+      "id": "pre-web-http",
+      "title": "Web foundations: HTTP, JSON and REST",
+      "skillArea": "web-http-api",
+      "targetGap": "Can program but doesn't understand browser/server flow, HTTP, JSON, status codes or CORS.",
+      "estimatedMinutes": 120,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "You will call models and tools over HTTP APIs. Understanding the request/response cycle is the bridge from your code to a model."
+        },
+        {
+          "heading": "Mental model",
+          "body": "A client sends a request (method + path + optional JSON body); a server routes it to a handler; the handler returns a response with a status code and usually JSON. 2xx = success, 4xx = your request was wrong, 5xx = the server failed."
+        },
+        {
+          "heading": "Worked walkthrough",
+          "body": "A POST that creates a ticket and the response you'd expect.",
+          "code": "POST /api/tickets      Content-Type: application/json\n{ \"subject\": \"Login fails\" }\n\n201 Created\n{ \"id\": \"t_123\", \"status\": \"open\" }",
+          "codeLang": "http"
+        },
+        {
+          "heading": "The same-origin boundary (CORS)",
+          "body": "Browsers block a page on one origin from calling another origin unless the server opts in with CORS headers. This is a frequent early confusion when a fetch 'mysteriously' fails."
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "A request returns 401. What category of problem is it, and whose?",
+          "answer": "A 4xx client error — specifically missing/invalid authentication. The request must supply valid credentials."
+        }
+      ],
+      "checkpoint": {
+        "question": "What does a 500 status code tell you versus a 400?",
+        "answer": "500 means the server failed while handling a valid-looking request; 400 means the request itself was malformed. They point you at different code."
+      },
+      "evidencePrompt": "Call any public JSON API with an HTTP client and record the method, status code and a field from the JSON.",
+      "sourceIds": ["mdn-http-overview", "mdn-http-status", "mdn-cors"],
+      "unlocksLessonIds": ["day-09"]
+    },
+    {
+      "id": "pre-frontend",
+      "title": "Frontend foundations",
+      "skillArea": "frontend",
+      "targetGap": "Needs enough HTML/CSS/JS/TS, components, state and accessibility to understand and extend the portal.",
+      "estimatedMinutes": 120,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "The learning portal is a React app. Understanding components and state helps you read it and later build a simple client for your agent."
+        },
+        {
+          "heading": "Mental model",
+          "body": "A component is a function that returns UI from its inputs (props) and its changeable data (state). When state changes, the view re-renders. This idea returns later as LangGraph state."
+        },
+        {
+          "heading": "Annotated example",
+          "body": "A counter: state plus an event handler.",
+          "code": "function Counter() {\n  const [n, setN] = useState(0);   // changeable data\n  return <button onClick={() => setN(n + 1)}>Clicked {n}</button>;\n}",
+          "codeLang": "tsx"
+        },
+        {
+          "heading": "Accessibility is not optional",
+          "body": "Controls need labels, keyboard operation, visible focus and sufficient contrast — the same standard this portal holds itself to."
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "Why must an icon-only button still have accessible text?",
+          "answer": "Screen-reader users and keyboard users need a name to know what the control does; use aria-label or visually-hidden text."
+        }
+      ],
+      "checkpoint": {
+        "question": "What triggers a re-render in a component-based UI?",
+        "answer": "A change to the component's state (or props); the framework recomputes and updates the view."
+      },
+      "evidencePrompt": "Build a tiny component with one piece of state and note how you made a control keyboard-accessible.",
+      "sourceIds": ["mdn-javascript-first-steps", "react-learn", "wcag-quickref"],
+      "unlocksLessonIds": ["day-09"]
+    },
+    {
+      "id": "pre-backend-data",
+      "title": "Backend and data foundations",
+      "skillArea": "backend-data",
+      "targetGap": "Needs Flask/FastAPI concepts, SQL/data modeling, object storage, caching and observability basics.",
+      "estimatedMinutes": 150,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "RAG and agents are backends: they route requests, query data stores, cache results and emit logs. Your backend instincts transfer directly."
+        },
+        {
+          "heading": "Connect it to what you know",
+          "body": "A Flask/FastAPI route that reads a row by id is the same shape as a retrieval endpoint that reads a chunk by id. A database index that speeds lookups is the ancestor of a vector index."
+        },
+        {
+          "heading": "Annotated example",
+          "body": "A typed FastAPI route returning JSON.",
+          "code": "@app.get(\"/tickets/{ticket_id}\")\ndef get_ticket(ticket_id: str) -> dict:\n    row = db.fetch_one(\"SELECT * FROM tickets WHERE id = %s\", [ticket_id])\n    if row is None:\n        raise HTTPException(status_code=404)\n    return row",
+          "codeLang": "python"
+        },
+        {
+          "heading": "Data modeling and filtering",
+          "body": "A WHERE clause filters rows; later you'll combine metadata filters with vector similarity. Observability (logs/metrics) tells you what actually happened in production."
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "How is a database index like a vector index?",
+          "answer": "Both trade extra structure/space to make lookups fast — exact-match/range for a DB index, approximate nearest-neighbor for a vector index."
+        }
+      ],
+      "checkpoint": {
+        "question": "Why return 404 instead of an empty 200 when a ticket is missing?",
+        "answer": "The status code communicates the outcome precisely so clients can react correctly; an empty 200 hides the real state."
+      },
+      "evidencePrompt": "Sketch a two-table schema for the support system and write one SQL query with a WHERE clause.",
+      "sourceIds": ["flask-quickstart", "fastapi-docs", "postgres-tutorial"],
+      "unlocksLessonIds": ["day-12", "day-13"]
+    },
+    {
+      "id": "pre-math-data",
+      "title": "Math and data foundations",
+      "skillArea": "math-data",
+      "targetGap": "Needs algebra, vectors, matrices, probability, derivatives/gradients, NumPy and pandas.",
+      "estimatedMinutes": 150,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "Weights, embeddings, attention and training are all built from vectors, matrices and gradients. A little comfort here removes the mystery from the deep-learning units."
+        },
+        {
+          "heading": "Mental model",
+          "body": "A vector is an ordered list of numbers; a matrix is a table; a dot product multiplies matching entries and sums them. A derivative is 'how much the output changes if I nudge the input'; a gradient collects those nudges for many parameters."
+        },
+        {
+          "heading": "Annotated example",
+          "body": "A weighted sum in NumPy — the core of a neuron.",
+          "code": "import numpy as np\nfeatures = np.array([3, 5, 1])\nweights  = np.array([0.4, -0.2, 0.9])\noutput = features @ weights + 0.5   # dot product + bias\nprint(output)  # 2.6",
+          "codeLang": "python"
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "Compute the dot product of [1,0,2] and [3,4,1] by hand.",
+          "answer": "1*3 + 0*4 + 2*1 = 5."
+        }
+      ],
+      "checkpoint": {
+        "question": "In plain words, what does a gradient tell you during training?",
+        "answer": "Which direction and how much to change each weight to reduce the loss a little."
+      },
+      "evidencePrompt": "Reproduce the weighted-sum example in NumPy and change one weight; record how the output changes.",
+      "sourceIds": ["numpy-basics", "pandas-getting-started", "3b1b-dot"],
+      "unlocksLessonIds": ["day-02", "day-04"]
+    },
+    {
+      "id": "pre-delivery",
+      "title": "Delivery foundations: Docker, cloud, CI/CD",
+      "skillArea": "cloud-containers",
+      "targetGap": "Needs Docker, cloud responsibility mapping, CI/CD, IAM and reliability/cost awareness.",
+      "estimatedMinutes": 120,
+      "explanation": [
+        {
+          "heading": "Why this matters",
+          "body": "The capstone deploys a real service. Containers make labs reproducible, and the shared-responsibility model clarifies what you own versus the cloud."
+        },
+        {
+          "heading": "Mental model",
+          "body": "A container packages your app plus its dependencies so it runs the same everywhere. In a managed/serverless cloud, the provider patches the infrastructure while you own your code, config, data and access (IAM)."
+        },
+        {
+          "heading": "Connect it to agents",
+          "body": "IAM permissions for a cloud resource are the same idea as least-privilege tool permissions for an agent: grant only what is needed."
+        }
+      ],
+      "exercises": [
+        {
+          "prompt": "In managed serverless, who patches the OS?",
+          "answer": "The cloud provider, under the shared-responsibility model; you still own app config, data and access control."
+        }
+      ],
+      "checkpoint": {
+        "question": "Why does a container make a lab more reproducible?",
+        "answer": "It bundles the exact runtime and dependencies, so 'works on my machine' becomes 'works the same everywhere'."
+      },
+      "evidencePrompt": "Write a minimal Dockerfile for a Python script and note the base image and why you chose it.",
+      "sourceIds": ["docker-get-started", "aws-observability"],
+      "unlocksLessonIds": ["day-24", "day-28"]
+    }
+  ]
+}

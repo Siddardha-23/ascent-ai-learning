@@ -8,6 +8,17 @@ import {
   type LearnerState,
   type StudySession,
 } from "./schema";
+import {
+  emptyV2Block,
+  V2_LIMITS,
+  type AssessmentDraft,
+  type AssessmentResult,
+  type DepthPreference,
+  type LearningPreferences,
+  type PlanRevision,
+  type V2Block,
+  type ValidatedKnowledge,
+} from "./v2-schema";
 
 /**
  * Pure, immutable mutations of LearnerState. The UI dispatches these; tests
@@ -33,7 +44,17 @@ export type Action =
   | { type: "removeSession"; sessionId: string }
   | { type: "setWeeklyTarget"; minutes: number }
   | { type: "setTimezone"; timezone: string }
-  | { type: "replaceState"; state: LearnerState };
+  | { type: "replaceState"; state: LearnerState }
+  // ---- v2 actions (additive; never auto-complete canonical tasks) ----
+  | { type: "saveAssessmentDraft"; draft: AssessmentDraft }
+  | { type: "clearAssessmentDraft" }
+  | { type: "submitAssessment"; result: AssessmentResult; validated: ValidatedKnowledge[] }
+  | { type: "setPreferences"; preferences: LearningPreferences }
+  | { type: "setDepthPreference"; depth: DepthPreference }
+  | { type: "addPlanRevision"; revision: PlanRevision }
+  | { type: "activatePlan"; revisionId: string | null }
+  | { type: "returnToStandardPath" }
+  | { type: "setAiConsent"; consent: boolean };
 
 const SAFE_URL = /^(https?:|mailto:|file:)/i;
 
@@ -53,6 +74,16 @@ function withDay(
 
 function clamp(s: string, max: number): string {
   return s.length > max ? s.slice(0, max) : s;
+}
+
+/** Apply a change to the additive v2 block, initializing it if absent. */
+function withV2(state: LearnerState, fn: (v2: V2Block) => V2Block): LearnerState {
+  const current = state.v2 ?? emptyV2Block();
+  return {
+    ...state,
+    v2: fn(current),
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 export function reduce(state: LearnerState, action: Action): LearnerState {
@@ -191,6 +222,86 @@ export function reduce(state: LearnerState, action: Action): LearnerState {
       };
     case "replaceState":
       return { ...action.state, updatedAt: new Date().toISOString() };
+
+    // ---- v2 handlers ----
+    case "saveAssessmentDraft":
+      return withV2(state, (v2) => ({
+        ...v2,
+        assessment: { results: v2.assessment?.results ?? [], draft: action.draft },
+      }));
+    case "clearAssessmentDraft":
+      return withV2(state, (v2) => ({
+        ...v2,
+        assessment: { results: v2.assessment?.results ?? [], draft: undefined },
+      }));
+    case "submitAssessment":
+      return withV2(state, (v2) => {
+        const prior = v2.assessment?.results ?? [];
+        // Cap retake history; keep the most recent.
+        const results = [...prior, action.result].slice(-V2_LIMITS.maxAssessmentResults);
+        // Merge validated prior knowledge (latest wins per skill area).
+        const byArea = new Map<string, ValidatedKnowledge>();
+        for (const v of v2.validatedPriorKnowledge ?? []) byArea.set(v.skillArea, v);
+        for (const v of action.validated) byArea.set(v.skillArea, v);
+        return {
+          ...v2,
+          assessment: { results, draft: undefined },
+          validatedPriorKnowledge: [...byArea.values()],
+        };
+      });
+    case "setPreferences":
+      return withV2(state, (v2) => ({ ...v2, preferences: action.preferences }));
+    case "setDepthPreference":
+      return withV2(state, (v2) => ({
+        ...v2,
+        preferences: {
+          ...(v2.preferences ?? {
+            languages: [],
+            weeklyMinutes: 300,
+            sessionMinutes: 45,
+            teachingModes: [],
+            compute: [],
+            cloud: "none" as const,
+            depth: "simple" as const,
+          }),
+          depth: action.depth,
+        },
+      }));
+    case "addPlanRevision":
+      return withV2(state, (v2) => {
+        const existing = v2.plan ?? { activeRevisionId: null, revisions: [] };
+        const revisions = [...existing.revisions, action.revision].slice(
+          -V2_LIMITS.maxPlanRevisions,
+        );
+        return { ...v2, plan: { ...existing, revisions } };
+      });
+    case "activatePlan":
+      return withV2(state, (v2) => {
+        const existing = v2.plan ?? { activeRevisionId: null, revisions: [] };
+        // Only activate a revision that exists (or null for standard path).
+        if (
+          action.revisionId !== null &&
+          !existing.revisions.some((r) => r.id === action.revisionId)
+        ) {
+          return v2;
+        }
+        return { ...v2, plan: { ...existing, activeRevisionId: action.revisionId } };
+      });
+    case "returnToStandardPath":
+      return withV2(state, (v2) => {
+        const existing = v2.plan ?? { activeRevisionId: null, revisions: [] };
+        return { ...v2, plan: { ...existing, activeRevisionId: null } };
+      });
+    case "setAiConsent":
+      return withV2(state, (v2) => ({
+        ...v2,
+        ai: {
+          consent: action.consent,
+          consentAt: action.consent ? new Date().toISOString() : v2.ai?.consentAt,
+          revokedAt: action.consent ? undefined : new Date().toISOString(),
+          cache: v2.ai?.cache ?? [],
+        },
+      }));
     default:
       return state;
   }

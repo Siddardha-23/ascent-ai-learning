@@ -21,6 +21,7 @@ import { Card, Pill, SectionTitle } from "@/components/ui";
 import { AutoTextarea } from "@/components/fields";
 import { ResourceCard } from "@/components/ResourceCard";
 import { StudySessionLogger } from "@/components/StudySessionLogger";
+import { LessonEnhancements } from "@/components/LessonEnhancements";
 import { formatMinutes } from "@/lib/date";
 
 const TASK_KIND_LABEL: Record<string, string> = {
@@ -132,6 +133,9 @@ export function LessonWorkspace({ lesson }: { lesson: Lesson }) {
               ))}
             </ul>
           </Card>
+
+          {/* Enhanced presentation (authored blocks + interactive visuals) */}
+          <LessonEnhancements lessonId={lesson.id} lessonTitle={lesson.title} />
 
           {/* Resources */}
           <Card>

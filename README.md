@@ -146,3 +146,146 @@ Course content ships versioned (`contentVersion`) and separate from mutable lear
 state. Sources record publisher, type, and the date checked (2026-09-05). Links can
 change over time; the original URL is always shown and opening a link never marks a
 resource complete.
+
+
+---
+
+## v2 — Adaptive learning (optional, non-breaking)
+
+Version 2 adds an **optional** personalized layer on top of the unchanged 30-unit
+course. Nothing about v1 changes: the standard path is still the default and the
+common destination, all lesson/task IDs and completion rules are preserved, and
+every learner (v1 or v2) reaches the same generative-AI + agentic-AI destination.
+
+### Standard vs custom path
+
+- **Standard path (default):** follow the 30 units in order. Complete on its own,
+  needs no assessment and no AI.
+- **Custom path (optional):** take a 12–18 minute **skills check** (`/learn/assessment`).
+  A deterministic scorer produces a transparent per-skill result and a
+  **plan composer** proposes a reversible route to the same destination — adding
+  prerequisite *bridge* units where foundations are missing and offering faster
+  *revision lanes* where prior knowledge is verified.
+
+Key guarantees:
+
+- The plan is **composed deterministically** — no AI decides your path, ordering,
+  prerequisites, or completion. Identical answers always produce the same plan.
+- Plans are **previewed before activation** and **fully reversible**: switch plans,
+  restore a previous revision, or **return to the standard path** at any time.
+  Switching never erases progress; completed tasks stay complete.
+- Verified prior knowledge is recorded **separately** from completed tasks — the
+  assessment never auto-completes canonical work. Confidence alone never validates
+  a skill; only correct diagnostics do.
+
+### New pages
+
+- `/learn/assessment` — the skills-check wizard (saves after every step, resumable,
+  retakable, keyboard-accessible, "I'm not sure" everywhere).
+- `/learn/plan` — My plan: active revision, comparison vs standard, route list,
+  history with preview/restore, and "return to standard path".
+- `/learn/skills` — Skills map: the competency dependency graph with your verified
+  evidence state (no fabricated mastery percentages).
+- `/learn/prerequisite/[id]` — a prerequisite bridge unit.
+
+Lessons now also include **enhancement blocks** (why-this-matters, connect-to-what-you-know,
+mental model, worked walkthrough, annotated code, predict-before-reveal, play,
+misconception, explain-back) with a **simple / deeper / implementation** depth
+toggle (persisted), plus accessible **interactive visuals** (weighted sum, gradient
+step, tokenization+sampling, attention, embeddings/cosine, RAG pipeline, tool loop,
+LangGraph, graph-type comparison, prompt-injection boundary, cache taxonomy). All
+visuals have play/pause/reset where animated, text alternatives, keyboard operation,
+and honor reduced-motion. Required lab steps and sources are never hidden inside
+collapsed content.
+
+### Optional AI enhancement (OpenRouter)
+
+AI is **off by default** and **never controls the curriculum**. When enabled by
+configuration *and* opted in by the learner, it only:
+
+- rewrites the deterministic plan findings into a friendlier explanation,
+- offers an alternate analogy from a supplied lesson excerpt, and
+- gives rubric-based feedback on an explain-back answer (labeled AI feedback, not a
+  grade or proof of mastery).
+
+The app depends only on a server-only `AIEnhancementProvider` interface with a
+**deterministic fallback**, so the full flow works unchanged when AI is disabled,
+keyless, rate-limited, timed out, or returns invalid output.
+
+Data minimization: prompts are built server-side from **allowlisted structured
+fields only** (skill-area IDs, approved lesson excerpts). Learner **names, notes,
+evidence, links, and full progress are never sent**. Learner free text is treated
+as untrusted data and delimited. Output is re-validated with Zod. The API key is a
+**server-only** environment variable — never `NEXT_PUBLIC_`, never entered in a
+client form, never logged.
+
+**Free-router variability:** if `OPENROUTER_MODEL` is unset, OpenRouter free routing
+picks an available free model that can vary between requests — a sensible
+experimental default, not a reliability promise. Set `OPENROUTER_MODEL` (e.g.
+`openai/gpt-4o-mini`) to pin a model. Provider logging/retention policies differ; the
+app requests conservative routing (`data_collection: "deny"`) where supported.
+
+Official references: OpenRouter
+[quickstart](https://openrouter.ai/docs/quickstart),
+[free router](https://openrouter.ai/docs/guides/routing/routers/free-router),
+[structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs),
+[data collection](https://openrouter.ai/docs/guides/privacy/data-collection),
+[provider logging](https://openrouter.ai/docs/guides/privacy/provider-logging).
+Content was rephrased for compliance with licensing restrictions.
+
+#### Enabling AI on Vercel
+
+Set these as **server** environment variables (Project → Settings → Environment
+Variables) — do not expose them to the browser:
+
+```
+OPENROUTER_API_KEY=<your key>
+OPENROUTER_MODEL=openai/gpt-4o-mini   # optional; omit for free routing
+AI_PERSONALIZATION_ENABLED=true
+AI_TIMEOUT_MS=12000
+AI_MAX_CALLS_PER_PROFILE_PER_DAY=5
+AI_MAX_INPUT_CHARS=12000
+AI_MAX_OUTPUT_TOKENS=900
+```
+
+Then redeploy. Learners still must opt in from **Settings → AI enhancement**.
+
+### State schema v2 & migration
+
+Learner state is now `schemaVersion: 2`, adding optional `v2` fields (assessment
+results/draft, preferences, plan revisions + history, validated prior knowledge,
+AI consent/cache metadata) alongside all v1 fields. **v1 states migrate on read**
+(`parseAndMigrate`) in every reader — Blob, local adapter, browser draft, and backup
+import — so existing Harshith/Aparna data loads with zero loss. The Blob namespace is
+unchanged (`ascent/progress/v1/<profile>.json`).
+
+Backups are now **version 2**; **v1 backups still import** (upgraded on import with a
+preview and a clear notice). A wrong-profile or invalid backup is rejected.
+
+### Verification (v2)
+
+All checks were run and passed:
+
+- `npm run validate:content` — content + v2 modules (30 lessons / 240 tasks / 77
+  sources / 123 glossary; 18 competencies, 7 prerequisite modules, 29 assessment
+  questions, 12 lesson enhancements).
+- `npm run test` — **77** unit/integration tests (12 files): migration (v1→v2, zero
+  loss), composer determinism + all six starting profiles converging on the same
+  destination, scorer (confidence never validates), AI success + every fallback
+  (malformed / 401 / 429 / 5xx / timeout / invalid / disabled / no-key), AI PII
+  isolation, v2 referential validation, backup v1/v2 round-trip.
+- `npm run test:e2e` — **12** Playwright flows at phone + desktop (profile entry,
+  lesson depth toggle + visual, assessment → plan preview → activate → return to
+  standard, skills map, no horizontal clipping).
+- `npm run typecheck`, `npm run lint` (ESLint CLI), `npm run build` (51 routes) — all clean.
+- Live smoke: private-Blob round-trip of the full v2 state (plan + assessment +
+  consent) with a 409 conflict on stale writes; one live OpenRouter success
+  (schema-validated, model recorded) plus forced fallbacks.
+
+### Known limitations
+
+- Free-router model selection can vary per request; pin `OPENROUTER_MODEL` for
+  stability.
+- The AI daily budget limiter is in-memory (per server instance) — a soft guard for
+  a low-volume personal app, not a distributed limiter.
+- Name-only profiles are not authentication; anyone with the link can enter any name.

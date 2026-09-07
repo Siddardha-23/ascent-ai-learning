@@ -13,6 +13,7 @@ import {
 import { Card, SectionTitle } from "@/components/ui";
 import { formatMinutes } from "@/lib/date";
 import { completedCoreTaskCount } from "@/lib/progress/completion";
+import { AIConsentPanel } from "@/components/ai/AIConsentPanel";
 
 export function SettingsView() {
   const { state, dispatch, replaceState, profileId, displayName, storageMode } =
@@ -126,6 +127,9 @@ export function SettingsView() {
           <span className="font-medium">{state.settings.timezone}</span>.
         </p>
       </Card>
+
+      {/* AI enhancement consent + status */}
+      <AIConsentPanel />
 
       {/* Backup */}
       <Card>

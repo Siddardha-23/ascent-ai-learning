@@ -154,3 +154,71 @@ End-to-end tests cover profile selection, lesson navigation, notes, task toggles
 
 Build the production app. Deploy a Vercel preview only when the correct project and storage target are known. If storage credentials are absent, report local mode and exact next setup step; do not fabricate a cloud test. No secrets or account identifiers are supplied in this specification.
 
+
+
+---
+
+# v2 design — Adaptive learning extension
+
+Additive to the v1 design. The standard path and all v1 persistence/conflict behavior are unchanged.
+
+## New content modules (versioned, build-time validated)
+
+```
+content/
+  competencies.json          stable competency graph -> teaching lessons + verifying diagnostics
+  prerequisiteModules.json   bridge units -> unlocked canonical lesson IDs
+  assessmentBank.json        diagnostic questions with rubric + evidence strength
+  lessonEnhancements.json    presentation blocks keyed to existing lesson IDs
+src/lib/content/
+  v2-schema.ts               zod schemas for the four modules
+  v2-content.ts              validated loaders + selectors + source resolution
+scripts/validate-v2-content.ts   build-time integrity (IDs unique, sources resolve, lesson refs exist)
+```
+
+`CONTENT_VERSION` remains the curriculum version; each v2 module carries its own `moduleVersion`. Source references resolve against the existing `sources.json` catalog or a small additive `content/sources-v2.json` recorded with the same fields.
+
+## State v2 (src/lib/progress/schema.ts)
+
+`learnerStateSchema` becomes a discriminated union on `schemaVersion` (1 | 2) OR keeps `schemaVersion: 2` with a `migrateToV2()` applied on every read. Chosen approach: **accept both, migrate-on-read to v2**, so v1 Blob objects load without loss. New optional, bounded fields:
+
+- `assessment?: { draft?, results?: AssessmentResult[], … }` (retake history bounded)
+- `preferences?: LearningPreferences`
+- `plan?: { activeRevisionId, revisions: PlanRevision[] }` (history bounded)
+- `validatedPriorKnowledge?: Record<skillArea, { state, evidenceRefs[] }>`
+- `ai?: { consent: boolean|null, revokedAt?, cache?: EnhancementCacheMeta[] }`
+- all v1 fields unchanged
+
+`migrateV1toV2(state)` sets `schemaVersion: 2` and default-empties the new fields; identity on already-v2 state. Applied in `blob-repository`/`local-repository` load, client draft load, and backup import. `validate-state.ts` gains referential checks for plan item IDs (must be a canonical lesson, prerequisite module, or presentation variant) and assessment/question IDs, still rejecting unknown IDs.
+
+## Plan composer (pure, no AI) — src/lib/plan/composer.ts
+
+`composePlan(result: AssessmentResult, prefs: LearningPreferences, algoVersion): PlanRevision`. Deterministic: for identical inputs it returns byte-identical output (stable sort, no Date.now inside — creation time is stamped by the caller/reducer). Selects prerequisite modules for `Needs a foundation` areas, revision lanes for `Validated prior knowledge`, standard lessons otherwise, optional-depth for challenge. Destination competency set + capstone are constant across all six scenarios. Unit-tested for determinism and for the six starting profiles.
+
+## Reducer + client additions
+
+New `Action`s: `saveAssessmentDraft`, `submitAssessment`, `setPreferences`, `previewPlan`, `activatePlan`, `restorePlanRevision`, `returnToStandardPath`, `setDepthPreference`, `setAiConsent`. All pure, bounded, and never auto-complete canonical tasks. `ProgressContextValue` gains read helpers for the active plan and assessment; resume uses the active plan when present, else the v1 `resumeTarget`.
+
+## AI enhancement (server-only)
+
+```
+src/lib/ai/provider.ts        AIEnhancementProvider interface + types
+src/lib/ai/deterministic.ts   authored fallback provider (no network)
+src/lib/ai/openrouter.ts      OpenRouter provider (server-only), Zod-validated JSON
+src/app/api/ai/enhance/route.ts  rate-limited, same-origin, consent-gated endpoint
+src/app/api/ai/status/route.ts   disabled|configured|unavailable|active + last model
+```
+
+The app depends only on the interface. `getAIProvider()` returns OpenRouter when `AI_PERSONALIZATION_ENABLED=true` and a key is present, else the deterministic provider. Prompts are built server-side from allowlisted structured fields; learner free text is delimited and marked untrusted. Requests use JSON-schema structured output where supported and are re-validated with Zod. Caching by salted hash of (prompt-template version + model strategy + content version + sanitized input). The key and raw provider errors never reach the browser. Official references cited in README: OpenRouter quickstart, free-router, structured-outputs, data-collection, provider-logging.
+
+## Env (added to .env.example)
+
+`OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `OPENROUTER_SITE_URL`, `OPENROUTER_APP_NAME`, `AI_PERSONALIZATION_ENABLED`, `AI_TIMEOUT_MS`, `AI_MAX_CALLS_PER_PROFILE_PER_DAY`, `AI_MAX_INPUT_CHARS`, `AI_MAX_OUTPUT_TOKENS`. Never `NEXT_PUBLIC_`, never committed.
+
+## New routes/pages
+
+`/learn/assessment` (wizard), `/learn/plan` (My plan + history), `/learn/skills` (Skills map). `LearnShell.NAV` gains Plan/Skills entries; onboarding choice appears on the dashboard for learners without an active plan. Interactive visuals live under `src/components/visuals/` with shared accessible controls (`useReducedMotion`, play/pause/reset, text alternative).
+
+## Verification
+
+Vitest for content/migration/composer/scoring/AI-fallback/PII isolation; Playwright (added dev dep + config) for assessment/plan/lesson responsive + a11y flows; `next lint` replaced by an ESLint flat/CLI config. Live AI and cloud checks run only if the respective env is actually configured and authorized.

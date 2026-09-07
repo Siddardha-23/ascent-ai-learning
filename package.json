@@ -7,11 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate:content": "python scripts/validate-package.py"
+    "test:e2e": "playwright test",
+    "validate:content": "python scripts/validate-package.py && tsx scripts/validate-v2-content.ts"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
@@ -22,6 +23,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",

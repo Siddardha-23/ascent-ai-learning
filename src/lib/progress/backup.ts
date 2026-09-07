@@ -1,5 +1,6 @@
 import {
-  backupSchema,
+  parseAndMigrateBackup,
+  backupV1Schema,
   emptyState,
   LIMITS,
   type Backup,
@@ -7,11 +8,11 @@ import {
   type ProfileId,
 } from "./schema";
 
-/** Build a versioned per-profile backup object. */
+/** Build a versioned (v2) per-profile backup object. */
 export function createBackup(state: LearnerState): Backup {
   return {
     kind: "ascent-backup",
-    backupVersion: 1,
+    backupVersion: 2,
     profileId: state.profileId,
     contentVersion: state.contentVersion,
     exportedAt: new Date().toISOString(),
@@ -49,14 +50,12 @@ export function parseBackup(
   } catch {
     return { ok: false, message: "File is not valid JSON." };
   }
-  const result = backupSchema.safeParse(parsed);
-  if (!result.success) {
-    return {
-      ok: false,
-      message: `Not a valid Ascent backup: ${result.error.issues[0]?.message ?? "schema error"}`,
-    };
+  const wasV1 = backupV1Schema.safeParse(parsed).success;
+  // Accept either backup version; v1 is migrated to v2.
+  const backup = parseAndMigrateBackup(parsed);
+  if (!backup) {
+    return { ok: false, message: "Not a valid Ascent backup (unrecognized version or shape)." };
   }
-  const backup = result.data;
   if (backup.profileId !== expectedProfile) {
     return {
       ok: false,
@@ -64,6 +63,11 @@ export function parseBackup(
     };
   }
   const warnings: string[] = [];
+  if (wasV1) {
+    warnings.push(
+      "This is an older (v1) backup. It will be upgraded to the current format on import; your tasks, notes, evidence and sessions are preserved.",
+    );
+  }
   if (backup.contentVersion !== currentContentVersion) {
     warnings.push(
       `Backup content version (${backup.contentVersion}) differs from current (${currentContentVersion}). Task IDs are preserved; unknown IDs are ignored on import.`,

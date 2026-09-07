@@ -11,7 +11,7 @@ import {
 } from "react";
 import {
   emptyState,
-  learnerStateSchema,
+  parseAndMigrate,
   type LearnerState,
   type ProfileId,
   type StorageMode,
@@ -74,7 +74,7 @@ function loadDraft(profileId: ProfileId): LearnerState | null {
   try {
     const raw = window.localStorage.getItem(draftKey(profileId));
     if (!raw) return null;
-    return learnerStateSchema.parse(JSON.parse(raw));
+    return parseAndMigrate(JSON.parse(raw));
   } catch {
     return null;
   }
@@ -294,7 +294,7 @@ export function ProgressProvider({
     stateRef.current = remote;
     clearDraft(profileId);
     setSaveStatus("saved-cloud");
-  }, [conflict, profileId, contentVersion, timezone]);
+  }, [conflict, profileId, contentVersion, timezone, displayName]);
 
   const flushNow = useCallback(async () => {
     if (debounceRef.current) clearTimeout(debounceRef.current);

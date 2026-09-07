@@ -1,9 +1,13 @@
 import { z } from "zod";
+import { v2BlockSchema, emptyV2Block } from "./v2-schema";
 
 /**
  * Learner state schema (design.md). Learner state is mutable and stored
  * separately from the versioned course content. Bounds are application
  * design choices, not provider limits.
+ *
+ * v2 (this file) embeds all v1 fields plus an additive optional `v2` block.
+ * Existing v1 states are migrated on read; no data is lost.
  */
 
 /**
@@ -147,8 +151,16 @@ export const lastLocationSchema = z
   })
   .nullable();
 
-export const learnerStateSchema = z.object({
-  schemaVersion: z.literal(1),
+/**
+ * Current learner state is schemaVersion 2. It embeds all v1 fields plus the
+ * additive, optional v2 block (assessment, preferences, plan, validated prior
+ * knowledge, AI consent/cache). v1 states are migrated on read (see
+ * parseAndMigrate) so no existing Harshith/Aparna data is lost.
+ */
+export const CURRENT_SCHEMA_VERSION = 2 as const;
+
+/** Fields shared by every learner-state version. */
+const baseStateShape = {
   contentVersion: z.string(),
   profileId: profileIdSchema,
   displayName: z.string().max(PROFILE_ID_MAX * 2).optional(),
@@ -157,8 +169,47 @@ export const learnerStateSchema = z.object({
   settings: settingsSchema.default({ weeklyTargetMinutes: 300, timezone: "UTC" }),
   lastLocation: lastLocationSchema.default(null),
   updatedAt: z.string(),
+};
+
+/** Canonical (v2) learner state. */
+export const learnerStateSchema = z.object({
+  schemaVersion: z.literal(2),
+  ...baseStateShape,
+  v2: v2BlockSchema.default(emptyV2Block()),
 });
 export type LearnerState = z.infer<typeof learnerStateSchema>;
+
+/** Legacy v1 shape, accepted only as migration input. */
+export const learnerStateV1Schema = z.object({
+  schemaVersion: z.literal(1),
+  ...baseStateShape,
+});
+export type LearnerStateV1 = z.infer<typeof learnerStateV1Schema>;
+
+/**
+ * Migrate a validated v1 state to the current v2 shape. Additive only:
+ * every v1 field is preserved and the v2 block is initialized empty.
+ */
+export function migrateV1toV2(v1: LearnerStateV1): LearnerState {
+  return {
+    ...v1,
+    schemaVersion: 2,
+    v2: emptyV2Block(),
+  };
+}
+
+/**
+ * Parse unknown stored/imported data of EITHER version and return current v2
+ * state, or null if it is not a recognizable learner state. This is the single
+ * entry point used by every reader (repositories, client drafts, backups).
+ */
+export function parseAndMigrate(input: unknown): LearnerState | null {
+  const v2 = learnerStateSchema.safeParse(input);
+  if (v2.success) return v2.data;
+  const v1 = learnerStateV1Schema.safeParse(input);
+  if (v1.success) return migrateV1toV2(v1.data);
+  return null;
+}
 
 export const storageModeSchema = z.enum(["local", "blob", "postgres"]);
 export type StorageMode = z.infer<typeof storageModeSchema>;
@@ -170,15 +221,48 @@ export const storedProgressSchema = z.object({
 });
 export type StoredProgress = z.infer<typeof storedProgressSchema>;
 
+/** Current (v2) backup. */
 export const backupSchema = z.object({
   kind: z.literal("ascent-backup"),
-  backupVersion: z.literal(1),
+  backupVersion: z.literal(2),
   profileId: profileIdSchema,
   contentVersion: z.string(),
   exportedAt: z.string(),
   state: learnerStateSchema,
 });
 export type Backup = z.infer<typeof backupSchema>;
+
+/** Legacy (v1) backup, accepted for import and migrated. */
+export const backupV1Schema = z.object({
+  kind: z.literal("ascent-backup"),
+  backupVersion: z.literal(1),
+  profileId: profileIdSchema,
+  contentVersion: z.string(),
+  exportedAt: z.string(),
+  state: learnerStateV1Schema,
+});
+export type BackupV1 = z.infer<typeof backupV1Schema>;
+
+/**
+ * Parse a backup of either version. Returns a normalized v2 backup (state
+ * migrated) or null if it is not a recognizable Ascent backup.
+ */
+export function parseAndMigrateBackup(input: unknown): Backup | null {
+  const v2 = backupSchema.safeParse(input);
+  if (v2.success) return v2.data;
+  const v1 = backupV1Schema.safeParse(input);
+  if (v1.success) {
+    return {
+      kind: "ascent-backup",
+      backupVersion: 2,
+      profileId: v1.data.profileId,
+      contentVersion: v1.data.contentVersion,
+      exportedAt: v1.data.exportedAt,
+      state: migrateV1toV2(v1.data.state),
+    };
+  }
+  return null;
+}
 
 export function emptyState(
   profileId: ProfileId,
@@ -187,7 +271,7 @@ export function emptyState(
   displayName?: string,
 ): LearnerState {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     contentVersion,
     profileId,
     ...(displayName ? { displayName } : {}),
@@ -196,6 +280,7 @@ export function emptyState(
     settings: { weeklyTargetMinutes: 300, timezone },
     lastLocation: null,
     updatedAt: new Date().toISOString(),
+    v2: emptyV2Block(),
   };
 }
 

@@ -1,0 +1,132 @@
+[
+  {
+    "id": "git-scm-book",
+    "title": "Pro Git — Getting Started & Git Basics",
+    "publisher": "Git SCM (Chacon & Straub)",
+    "url": "https://git-scm.com/book/en/v2",
+    "type": "Book",
+    "why": "Canonical, free reference for version control fundamentals used in every lab.",
+    "access": "Free online book.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "mdn-http-overview",
+    "title": "An overview of HTTP",
+    "publisher": "MDN Web Docs (Mozilla)",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+    "type": "Documentation",
+    "why": "Clear, vendor-neutral explanation of the request/response model, methods and status codes.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "mdn-http-status",
+    "title": "HTTP response status codes",
+    "publisher": "MDN Web Docs (Mozilla)",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+    "type": "Documentation",
+    "why": "Authoritative list of status codes for reasoning about API responses.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "mdn-cors",
+    "title": "Cross-Origin Resource Sharing (CORS)",
+    "publisher": "MDN Web Docs (Mozilla)",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS",
+    "type": "Documentation",
+    "why": "Explains the browser same-origin boundary that confuses many new web developers.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "mdn-javascript-first-steps",
+    "title": "JavaScript first steps",
+    "publisher": "MDN Web Docs (Mozilla)",
+    "url": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps",
+    "type": "Tutorial",
+    "why": "Grounded introduction to values, control flow and functions for the portal client work.",
+    "access": "Free tutorial.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "react-learn",
+    "title": "Learn React — Describing the UI & Adding Interactivity",
+    "publisher": "React (Meta)",
+    "url": "https://react.dev/learn",
+    "type": "Documentation",
+    "why": "Official, current explanation of components, props and state for the portal frontend.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "wcag-quickref",
+    "title": "How to Meet WCAG (Quick Reference)",
+    "publisher": "W3C Web Accessibility Initiative",
+    "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+    "type": "Standard",
+    "why": "The reference for building accessible controls, focus and contrast.",
+    "access": "Free standard reference.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "fastapi-docs",
+    "title": "FastAPI — First Steps & Tutorial",
+    "publisher": "FastAPI (Ramírez)",
+    "url": "https://fastapi.tiangolo.com/tutorial/",
+    "type": "Documentation",
+    "why": "Modern typed Python API framework used to connect backend familiarity to model serving.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "flask-quickstart",
+    "title": "Flask Quickstart",
+    "publisher": "Pallets Projects",
+    "url": "https://flask.palletsprojects.com/en/stable/quickstart/",
+    "type": "Documentation",
+    "why": "The framework the learner already knows; the bridge from routes to tool dispatch.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "postgres-tutorial",
+    "title": "PostgreSQL Tutorial",
+    "publisher": "PostgreSQL Global Development Group",
+    "url": "https://www.postgresql.org/docs/current/tutorial.html",
+    "type": "Documentation",
+    "why": "SQL and data-modeling fundamentals that precede vector indexes and metadata filtering.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "docker-get-started",
+    "title": "Docker — Get Started",
+    "publisher": "Docker Inc.",
+    "url": "https://docs.docker.com/get-started/",
+    "type": "Documentation",
+    "why": "Container fundamentals for reproducible labs and deployment.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "python-venv",
+    "title": "venv — Creation of virtual environments",
+    "publisher": "Python Software Foundation",
+    "url": "https://docs.python.org/3/library/venv.html",
+    "type": "Documentation",
+    "why": "Isolated environments so lab dependencies do not collide.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  },
+  {
+    "id": "pandas-getting-started",
+    "title": "pandas — Getting started tutorials",
+    "publisher": "pandas (NumFOCUS)",
+    "url": "https://pandas.pydata.org/docs/getting_started/index.html",
+    "type": "Documentation",
+    "why": "Tabular data handling used before evaluation and dataset work.",
+    "access": "Free documentation.",
+    "verifiedOn": "2026-09-05"
+  }
+]

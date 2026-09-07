@@ -1,0 +1,185 @@
+{
+  "moduleVersion": "2026-09-05.v2.1",
+  "competencies": [
+    {
+      "id": "comp-ai-framing",
+      "title": "Place a model in a normal system",
+      "description": "Explain where a model sits in a web request and separate an uncertain prediction from an authorized action.",
+      "skillArea": "llm-apps",
+      "destinationLevel": "practitioner",
+      "dependencies": [],
+      "taughtByLessonIds": ["day-01"],
+      "verifiedByQuestionIds": ["q-web-flow-order", "q-agent-permission"]
+    },
+    {
+      "id": "comp-ml-math",
+      "title": "Read the math behind a prediction",
+      "description": "Compute a weighted sum, use a loss curve, and distinguish tensor shape from values.",
+      "skillArea": "math-data",
+      "destinationLevel": "aware",
+      "dependencies": [],
+      "taughtByLessonIds": ["day-02"],
+      "verifiedByQuestionIds": ["q-vector-dot", "q-weights-learned"]
+    },
+    {
+      "id": "comp-ml-eval",
+      "title": "Train and honestly evaluate a model",
+      "description": "Split data without leakage and compare precision, recall and F1 against a baseline.",
+      "skillArea": "ml-foundations",
+      "destinationLevel": "practitioner",
+      "dependencies": ["comp-ml-math"],
+      "taughtByLessonIds": ["day-03"],
+      "verifiedByQuestionIds": ["q-leakage", "q-metric-choice"]
+    },
+    {
+      "id": "comp-neural-nets",
+      "title": "Understand neural networks and training",
+      "description": "Explain forward pass, loss, backprop and an optimizer step; distinguish weights from activations.",
+      "skillArea": "deep-learning",
+      "destinationLevel": "aware",
+      "dependencies": ["comp-ml-eval"],
+      "taughtByLessonIds": ["day-04", "day-05"],
+      "verifiedByQuestionIds": ["q-backprop-step"]
+    },
+    {
+      "id": "comp-transformers",
+      "title": "Explain tokens and attention",
+      "description": "Reason about tokenization, next-token prediction, context windows, attention and causal masking.",
+      "skillArea": "deep-learning",
+      "destinationLevel": "aware",
+      "dependencies": ["comp-neural-nets"],
+      "taughtByLessonIds": ["day-06", "day-07", "day-08"],
+      "verifiedByQuestionIds": ["q-tokens-not-words", "q-context-window"]
+    },
+    {
+      "id": "comp-model-apis",
+      "title": "Call models like a backend developer",
+      "description": "Make reliable model calls with structured output, prompting and context budgeting.",
+      "skillArea": "llm-apps",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-ai-framing", "comp-transformers"],
+      "taughtByLessonIds": ["day-09", "day-10"],
+      "verifiedByQuestionIds": ["q-structured-output", "q-temperature"]
+    },
+    {
+      "id": "comp-embeddings",
+      "title": "Use embeddings and semantic search",
+      "description": "Explain cosine similarity, nearest neighbors and how vectors differ from a knowledge graph.",
+      "skillArea": "retrieval-rag",
+      "destinationLevel": "practitioner",
+      "dependencies": ["comp-model-apis"],
+      "taughtByLessonIds": ["day-11", "day-12"],
+      "verifiedByQuestionIds": ["q-embedding-similarity"]
+    },
+    {
+      "id": "comp-rag",
+      "title": "Build and measure a cited RAG assistant",
+      "description": "Chunk, embed, retrieve, ground, cite, abstain, and improve retrieval with measured experiments.",
+      "skillArea": "retrieval-rag",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-embeddings"],
+      "taughtByLessonIds": ["day-13", "day-14"],
+      "verifiedByQuestionIds": ["q-rag-not-truth", "q-metric-choice"]
+    },
+    {
+      "id": "comp-graphs",
+      "title": "Know when graphs help retrieval",
+      "description": "Distinguish knowledge graphs, HNSW neighbor graphs and workflow graphs, and justify GraphRAG.",
+      "skillArea": "graphs",
+      "destinationLevel": "aware",
+      "dependencies": ["comp-rag"],
+      "taughtByLessonIds": ["day-15", "day-16"],
+      "verifiedByQuestionIds": ["q-graph-types"]
+    },
+    {
+      "id": "comp-tool-agent",
+      "title": "Build a tool-using agent from first principles",
+      "description": "Implement a model-decides / policy-check / tool / observe loop with a stopping condition.",
+      "skillArea": "agents-frameworks",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-model-apis"],
+      "taughtByLessonIds": ["day-17"],
+      "verifiedByQuestionIds": ["q-agent-permission", "q-tool-loop-order"]
+    },
+    {
+      "id": "comp-frameworks",
+      "title": "Use LangChain and LangGraph with understanding",
+      "description": "Explain chains, and LangGraph nodes, edges, reducers, checkpoints and interrupts.",
+      "skillArea": "agents-frameworks",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-tool-agent"],
+      "taughtByLessonIds": ["day-18", "day-19", "day-20", "day-21"],
+      "verifiedByQuestionIds": ["q-langgraph-state"]
+    },
+    {
+      "id": "comp-multiagent",
+      "title": "Reason about MCP, A2A and multi-agent systems",
+      "description": "Explain protocol boundaries and when multiple agents help or hurt.",
+      "skillArea": "agents-frameworks",
+      "destinationLevel": "aware",
+      "dependencies": ["comp-frameworks"],
+      "taughtByLessonIds": ["day-22"],
+      "verifiedByQuestionIds": ["q-langgraph-state"]
+    },
+    {
+      "id": "comp-eval-agents",
+      "title": "Evaluate agents and inspect traces",
+      "description": "Define evaluation sets, regression gates and trace inspection for agents.",
+      "skillArea": "security-observability",
+      "destinationLevel": "practitioner",
+      "dependencies": ["comp-frameworks"],
+      "taughtByLessonIds": ["day-23"],
+      "verifiedByQuestionIds": ["q-metric-choice"]
+    },
+    {
+      "id": "comp-enterprise-security",
+      "title": "Design enterprise architecture and security",
+      "description": "Apply least privilege, identify a prompt-injection boundary and map governance.",
+      "skillArea": "security-observability",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-eval-agents"],
+      "taughtByLessonIds": ["day-24"],
+      "verifiedByQuestionIds": ["q-injection-boundary"]
+    },
+    {
+      "id": "comp-scaling",
+      "title": "Manage caching, latency, cost and scaling",
+      "description": "Distinguish cache types and reason about latency and cost budgets.",
+      "skillArea": "cloud-containers",
+      "destinationLevel": "practitioner",
+      "dependencies": ["comp-enterprise-security"],
+      "taughtByLessonIds": ["day-25"],
+      "verifiedByQuestionIds": ["q-cache-types"]
+    },
+    {
+      "id": "comp-multimodal-tuning",
+      "title": "Apply multimodal, voice and fine-tuning",
+      "description": "Explain multimodal agents and when to fine-tune vs prompt or retrieve.",
+      "skillArea": "deep-learning",
+      "destinationLevel": "aware",
+      "dependencies": ["comp-scaling"],
+      "taughtByLessonIds": ["day-26", "day-27"],
+      "verifiedByQuestionIds": ["q-tokens-not-words"]
+    },
+    {
+      "id": "comp-deploy",
+      "title": "Deploy an agent and map three clouds",
+      "description": "Deploy one real cloud target and map AWS/GCP/Azure responsibilities.",
+      "skillArea": "cloud-containers",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-scaling"],
+      "taughtByLessonIds": ["day-28"],
+      "verifiedByQuestionIds": ["q-cloud-responsibility"]
+    },
+    {
+      "id": "comp-capstone",
+      "title": "Prove the system works and innovate",
+      "description": "Demonstrate a tested prototype, explain deployment, and design a new experiment.",
+      "skillArea": "llm-apps",
+      "destinationLevel": "builder",
+      "dependencies": ["comp-deploy", "comp-enterprise-security", "comp-rag", "comp-frameworks"],
+      "taughtByLessonIds": ["day-29", "day-30"],
+      "verifiedByQuestionIds": ["q-rag-not-truth"]
+    }
+  ]
+}

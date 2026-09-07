@@ -2,7 +2,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
-import { learnerStateSchema, type LearnerState, type ProfileId } from "./schema";
+import { parseAndMigrate, type LearnerState, type ProfileId } from "./schema";
 import type {
   LoadResult,
   ProgressRepository,
@@ -33,7 +33,8 @@ export class LocalRepository implements ProgressRepository {
   async load(profileId: ProfileId): Promise<LoadResult> {
     try {
       const body = await fs.readFile(fileFor(profileId), "utf8");
-      const state = learnerStateSchema.parse(JSON.parse(body));
+      const state = parseAndMigrate(JSON.parse(body));
+      if (!state) throw new Error("Stored progress does not match a known schema version");
       return { state, revision: revisionOf(body), storageMode: this.mode };
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
@@ -63,14 +64,12 @@ export class LocalRepository implements ProgressRepository {
 
     // Create-only collision.
     if (expectedRevision === null && currentRevision !== null) {
-      const current = learnerStateSchema.parse(JSON.parse(currentBody!));
+      const current = parseAndMigrate(JSON.parse(currentBody!));
       return { ok: false, kind: "conflict", current, revision: currentRevision };
     }
     // Stale update.
     if (expectedRevision !== null && expectedRevision !== currentRevision) {
-      const current = currentBody
-        ? learnerStateSchema.parse(JSON.parse(currentBody))
-        : null;
+      const current = currentBody ? parseAndMigrate(JSON.parse(currentBody)) : null;
       return { ok: false, kind: "conflict", current, revision: currentRevision };
     }
 
